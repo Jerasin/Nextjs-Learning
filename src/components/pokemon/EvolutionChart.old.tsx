@@ -1,14 +1,6 @@
-import {
-  EvolutionChain,
-  Evolvesto2,
-  PokemonDetail,
-} from "@/interfaces/pokemon";
-import {
-  GetPokemonEvolutionChain,
-  GetPokemonDetail,
-} from "@/pages/pokemon/api/detail";
+import { EvolutionChain, Evolvesto, PokemonDetail } from "@/interfaces/pokemon";
 import { getPathId } from "@/utils/useQuery";
-import React, { useState } from "react";
+import React from "react";
 
 interface EvolutionChartProps {
   data: EvolutionChain;
@@ -17,23 +9,22 @@ interface EvolutionChartProps {
   pokemonDetails: PokemonDetail[];
 }
 
-// const mapRecursiveEvolutionChain = (
-//   evolutionChain: string[],
-//   data: Evolvesto2[]
-// ) => {
-//   data.forEach((item) => {
-//     if (item?.species?.url != null) {
-//       evolutionChain.push(item.species.url);
-//     }
-
-//     if (item?.evolves_to?.length > 0) {
-//       mapRecursiveEvolutionChain(evolutionChain, item.evolves_to);
-//     }
-//   });
-// };
+const renderLoading = () => {
+  return (
+    <main className="flex flex-col min-h-screen items-center justify-start p-5 lg:p-10">
+      <h1
+        className="mb-14 text-start text-3xl font-bold
+    tracking-widest"
+      >
+        {" "}
+        Loading...
+      </h1>
+    </main>
+  );
+};
 
 const recursiveEvolutionChain = (
-  data: Evolvesto2[],
+  data: Evolvesto[],
   currentPokemonId: number,
   currentImg: string,
   pokemonDetails: PokemonDetail[]
@@ -81,21 +72,7 @@ const recursiveEvolutionChain = (
   });
 };
 
-const renderLoading = () => {
-  return (
-    <main className="flex flex-col min-h-screen items-center justify-start p-5 lg:p-10">
-      <h1
-        className="mb-14 text-start text-3xl font-bold
-    tracking-widest"
-      >
-        {" "}
-        Loading...
-      </h1>
-    </main>
-  );
-};
-
-export default function EvolutionChart(props: EvolutionChartProps) {
+const renderData = (props: EvolutionChartProps) => {
   const { data, currentImg, currentPokemonId, pokemonDetails } = props ?? {};
   const query = getPathId(data?.chain?.species?.url);
 
@@ -113,7 +90,7 @@ export default function EvolutionChart(props: EvolutionChartProps) {
   }
 
   return (
-    <div className="w-full bg-red-400 flex sm:flex-row flex-col">
+    <div className="w-full  flex sm:flex-row flex-col">
       {data?.chain?.species?.name != null ? (
         <div className="p-12 text-center">
           <h1>{data?.chain?.species?.name}</h1>
@@ -144,4 +121,8 @@ export default function EvolutionChart(props: EvolutionChartProps) {
       )}
     </div>
   );
+};
+
+export default function EvolutionChart(props: EvolutionChartProps) {
+  return renderData(props);
 }

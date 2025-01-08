@@ -98,7 +98,7 @@ export default function PokeomonListBadge(props: BadgeProps) {
         key={props.forms.name}
         name={props.forms.name}
         url={props.forms.url}
-        pathname={`/pokemon/${pokemonFormId}`}
+        pathname={`/pokemon-form/${pokemonFormId}`}
       />
     );
   } else if (props.types != null) {

@@ -4,7 +4,7 @@ import { GetPokemonTypeDetail } from "./api/detail";
 import { useRouter } from "next/router";
 import PokeomonListBadge from "@/components/pokemon/PokeomonListBadge";
 import { getPathId } from "@/utils/useQuery";
-import PokemonTypeTable from "@/components/PokemonTypeTable";
+import PokemonTypeTable from "@/components/pokemon/PokemonTypeTable";
 import Navbar from "@/components/Navbar";
 import Badge from "@/components/badge";
 import { GetPokemonTypeAll } from "./api/list";

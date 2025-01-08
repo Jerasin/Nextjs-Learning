@@ -105,6 +105,10 @@ export interface PokemonDetail {
   abilities: Array<{
     ability: { name: string; url: string; is_hidden: boolean; slot: number };
   }>;
+  species: {
+    name: string;
+    url: string;
+  };
 }
 
 export interface PokemonTypeDetail {
@@ -141,21 +145,21 @@ export interface EvolutionChain {
 
 export interface Chain {
   evolution_details: any[];
-  evolves_to: Evolvesto2[];
-  is_baby: boolean;
-  species: Trigger;
-}
-
-export interface Evolvesto2 {
-  evolution_details: Evolutiondetail[];
   evolves_to: Evolvesto[];
   is_baby: boolean;
   species: Trigger;
 }
 
-interface Evolvesto {
+// export interface Evolvesto2 {
+//   evolution_details: Evolutiondetail[];
+//   evolves_to: Evolvesto[];
+//   is_baby: boolean;
+//   species: Trigger;
+// }
+
+export interface Evolvesto {
   evolution_details: Evolutiondetail[];
-  evolves_to: any[];
+  evolves_to: Evolvesto[];
   is_baby: boolean;
   species: Trigger;
 }
@@ -181,7 +185,7 @@ interface Evolutiondetail {
   turn_upside_down: boolean;
 }
 
-interface Trigger {
+export interface Trigger {
   name: string;
   url: string;
 }

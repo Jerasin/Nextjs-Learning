@@ -45,7 +45,7 @@ export default function MoveList() {
     );
   }
 
-  console.log("data", data);
+  // console.log("data", data);
 
   if (paramsPage > totalPage) {
     router.push("/pokemon?page=1&pageSize=5");
@@ -74,6 +74,7 @@ export default function MoveList() {
             pageSize={paramsPageSize}
             paginationSize={paginationSize}
             totalPage={totalPage}
+            pathName={"/move"}
           />
         </div>
       </main>

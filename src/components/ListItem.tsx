@@ -1,4 +1,4 @@
-import CardLayout from "./layout/CardLayout";
+import { CardLayoutV2, CardLayout } from "./layout/CardLayout";
 import Link from "next/link";
 import { getPathId } from "@/utils/useQuery";
 
@@ -9,20 +9,21 @@ interface ListItemProps {
 
 const ListItem = (props: ListItemProps) => {
   return (
-    <ul className="list-none">
+    <ul className="list-none w-48 text-center">
       {props.itemList.map((i) => {
         const id = getPathId(i.url);
 
         return (
-          <CardLayout key={i.name}>
+          <CardLayoutV2 key={i.name}>
             <Link
+              className="block w-full h-full justify-center flex flex-col items-center"
               href={{
                 pathname: `${props.pathName}/${id}`,
               }}
             >
               {i.name}
             </Link>
-          </CardLayout>
+          </CardLayoutV2>
         );
       })}
     </ul>

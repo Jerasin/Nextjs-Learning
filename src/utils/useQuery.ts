@@ -1,9 +1,12 @@
 import { ValidationError } from "./constantError";
 
 export const getPathId = (url?: string) => {
+  // console.log("url",url);
   const getPathId = url?.split("/") ?? [];
 
-  console.log("length", getPathId.length);
+  // console.log("getPathId",getPathId);
+
+  // console.log("length", getPathId.length);
   if (getPathId.length > 5) {
     return getPathId[6];
   }

@@ -46,7 +46,7 @@ export default function PokemonList() {
     );
   }
 
-  console.log("data", data);
+  // console.log("data", data);
 
   if (paramsPage > totalPage) {
     router.push("/pokemon?page=1&pageSize=5");
@@ -65,7 +65,7 @@ export default function PokemonList() {
           </h1>
         </div>
 
-        <div className="flex  justify-center">
+        <div className="flex flex-row justify-center">
           <ListItem itemList={pokemonList} pathName="/pokemon" />
         </div>
 
@@ -81,4 +81,32 @@ export default function PokemonList() {
       </main>
     </>
   );
+
+  // return (
+  //   <>
+  //     <Navbar />
+  //     <main className="flex flex-col min-h-screen justify-center items-center p-5 lg:p-10">
+  //       <div className="flex justify-center">
+  //         <h1 className="mb-14 text-start text-3xl font-bold tracking-widest">
+  //           PokemonList Page
+  //         </h1>
+  //       </div>
+  
+  //       <div className="flex flex-row justify-center">
+  //         <ListItem itemList={pokemonList} pathName="/pokemon" />
+  //       </div>
+  
+  //       <div className="flex flex-row justify-center p-2">
+  //         <Pagination
+  //           page={paramsPage}
+  //           pageSize={paramsPageSize}
+  //           paginationSize={paginationSize}
+  //           totalPage={totalPage}
+  //           pathName={"/pokemon"}
+  //         />
+  //       </div>
+  //     </main>
+  //   </>
+  // );
+  
 }

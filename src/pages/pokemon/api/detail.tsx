@@ -71,7 +71,7 @@ export const GetPokemonEvolutionChain = (
     ? `https://pokeapi.co/api/v2/evolution-chain/${pokemonId}/`
     : null;
 
-  console.log("GetPokemonEvolutionChain url", url);
+  // console.log("GetPokemonEvolutionChain url", url);
 
   const { data, error, isLoading } = useSWR(url, fetcher);
 
