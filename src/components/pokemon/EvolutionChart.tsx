@@ -1,123 +1,88 @@
-import { EvolutionChain, Evolvesto, PokemonDetail } from "@/interfaces/pokemon";
+import {
+  Chain,
+  EvolutionChain,
+  Evolvesto,
+  PokemonDetail,
+} from "@/interfaces/pokemon";
 import { getPathId } from "@/utils/useQuery";
+import Link from "next/link";
 import React from "react";
+import LoadingPage from "../LoadingPage";
 
 interface EvolutionChartProps {
+  pokemonEvolutionChainData: Chain;
   pokemonDetails: PokemonDetail[];
 }
 
 const renderLoading = () => {
+  return LoadingPage();
+};
+
+const renderEvolution = (
+  chain: Evolvesto,
+  pokemonDetails: PokemonDetail[],
+  count: number
+) => {
+  const speciesName = chain.species.name;
+  const src = pokemonDetails.find((item) => item.name == chain.species.name);
+
   return (
-    <main className="flex flex-col min-h-screen items-center justify-start p-5 lg:p-10">
-      <h1
-        className="mb-14 text-start text-3xl font-bold
-    tracking-widest"
-      >
-        {" "}
-        Loading...
-      </h1>
-    </main>
+    <div className="w-auto flex items-center">
+      {/* <h1>Count: {count}</h1> */}
+      <div className="flex flex-col text-center">
+        {/* {count > 1 ? <i className="fa-solid fa-arrow-right"></i> : <></>} */}
+
+        <div>
+          <span className="text-lg font-bold">{speciesName}</span>
+        </div>
+
+        <div className="flex items-center w-44 h-32">
+        {count > 1 ? <i className="fa-solid fa-arrow-right"></i> : <></>}
+
+          <img
+            src={src?.sprites?.front_default}
+            alt="No Image"
+            className="block w-full h-full object-cover"
+          />
+
+          {/* {chain.evolves_to.length == 1 ? (
+            <i className="fa-solid fa-arrow-right"></i>
+          ) : (
+            <></>
+          )} */}
+        </div>
+      </div>
+
+      {/* {chain.evolves_to.length > 1 ? (
+        <div className="flex h-full  flex-col">
+          {chain.evolves_to.map(() => (
+            <div className="block bg-red-500">
+              <i className="fa-solid fa-arrow-right"></i>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <></>
+      )} */}
+
+      {chain.evolves_to.length > 0 && (
+        <div className="flex flex-col items-center">
+          {chain.evolves_to.map((evolution: Evolvesto, index: number) => (
+            <div key={index} className="flex flex-col items-center">
+              {renderEvolution(evolution, pokemonDetails, count + 1)}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 
-const recursiveEvolutionChain = (
-  data: Evolvesto[],
-  currentPokemonId: number,
-  currentImg: string,
-  pokemonDetails: PokemonDetail[]
-) => {
-  return data.map((item) => {
-    const query = getPathId(item?.species?.url);
-
-    if (query == null) {
-      return;
-    }
-
-    const id = parseInt(query);
-
-    let imgSrc = null;
-
-    if (currentPokemonId != id) {
-      imgSrc = pokemonDetails?.find((item) => item.id == id)?.sprites
-        ?.front_default;
-    }
-
-    return (
-      <div className="flex sm:flex-row flex-col" key={item.species.name}>
-        <div className="p-12 text-center">
-          <h1>{item.species.name}</h1>
-          {currentPokemonId == id ? (
-            <img
-              className="w-full"
-              src={`${currentImg}`}
-              alt="Image Not Found"
-            />
-          ) : (
-            <img className="w-full" src={`${imgSrc}`} alt="Image Not Found" />
-          )}
-        </div>
-
-        {item.evolves_to.length > 0 &&
-          recursiveEvolutionChain(
-            item.evolves_to,
-            currentPokemonId,
-            currentImg,
-            pokemonDetails
-          )}
-      </div>
-    );
-  });
-};
-
-const renderData = (props: EvolutionChartProps) => {
-  const { pokemonDetails } = props ?? {};
+export default function EvolutionChart(props: EvolutionChartProps) {
+  const { pokemonDetails, pokemonEvolutionChainData } = props ?? {};
 
   if (pokemonDetails == null) {
     return renderLoading();
   }
-
-  console.log("pokemonDetails", pokemonDetails);
-
-  return pokemonDetails.map((item, index) => {
-    const allIndex = pokemonDetails.length - 1;
-    return (
-      <div
-        className="flex sm:flex-row flex-col items-center justify-center"
-        key={item.name}
-      >
-        <div className="block px-12 py-2 text-center">
-          <h1>{item.name}</h1>
-
-          {/* <div className="flex">
-            <img
-              className="w-full"
-              src={`${item.sprites?.front_default}`}
-              alt="Image Not Found"
-            />
-
-            {index < allIndex ? <div>{"--->"}</div> : <></>}
-          </div> */}
-          <img
-            className="w-full h-full"
-            src={`${item.sprites?.front_default}`}
-            alt="Image Not Found"
-          />
-        </div>
-
-        <div className="sm:block hidden">
-          {index < allIndex ?  <i className="fas fa-arrow-right"></i> : <></>}
-        </div>
-
-        <div className="sm:hidden">
-          {index < allIndex ?  <i className="fas fa-arrow-down"></i> : <></>}
-        </div>
-
-       
-      </div>
-    );
-  });
-};
-
-export default function EvolutionChart(props: EvolutionChartProps) {
-  return renderData(props);
+  return renderEvolution(pokemonEvolutionChainData, pokemonDetails, 1);
 }
