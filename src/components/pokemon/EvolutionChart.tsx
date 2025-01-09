@@ -28,42 +28,28 @@ const renderEvolution = (
 
   return (
     <div className="w-auto flex items-center">
-      {/* <h1>Count: {count}</h1> */}
       <div className="flex flex-col text-center">
-        {/* {count > 1 ? <i className="fa-solid fa-arrow-right"></i> : <></>} */}
-
         <div>
           <span className="text-lg font-bold">{speciesName}</span>
         </div>
 
         <div className="flex items-center w-44 h-32">
-        {count > 1 ? <i className="fa-solid fa-arrow-right"></i> : <></>}
+          {count > 1 ? <i className="fa-solid fa-arrow-right"></i> : <></>}
 
-          <img
-            src={src?.sprites?.front_default}
-            alt="No Image"
-            className="block w-full h-full object-cover"
-          />
-
-          {/* {chain.evolves_to.length == 1 ? (
-            <i className="fa-solid fa-arrow-right"></i>
-          ) : (
-            <></>
-          )} */}
+          <Link
+            className="block w-full h-full justify-center flex flex-col items-center"
+            href={{
+              pathname: `${src?.id}`,
+            }}
+          >
+            <img
+              src={src?.sprites?.front_default}
+              alt="No Image"
+              className="block w-full h-full object-cover"
+            />
+          </Link>
         </div>
       </div>
-
-      {/* {chain.evolves_to.length > 1 ? (
-        <div className="flex h-full  flex-col">
-          {chain.evolves_to.map(() => (
-            <div className="block bg-red-500">
-              <i className="fa-solid fa-arrow-right"></i>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <></>
-      )} */}
 
       {chain.evolves_to.length > 0 && (
         <div className="flex flex-col items-center">
