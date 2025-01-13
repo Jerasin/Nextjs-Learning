@@ -1,5 +1,5 @@
 import { HtttpResponse } from "../../../interfaces/http";
-import useSWR, { SWRResponse } from "swr";
+import useSWR from "swr";
 
 export interface Pokemon {
   name: string;
@@ -14,10 +14,7 @@ export interface ReponseApiPokemon {
 const fetcher = (...args: Parameters<typeof fetch>) =>
   fetch(...args).then((res) => res.json());
 
-export const GetMoveList = (
-  page = 1,
-  page_size = 10
-): HtttpResponse<ReponseApiPokemon> => {
+export default (page = 1, page_size = 10): HtttpResponse<ReponseApiPokemon> => {
   const offset = (page - 1) * page_size;
   const limit = page_size;
 

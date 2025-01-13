@@ -1,10 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  GetPokemonDetail,
-  GetPokemonDetails,
-  GetPokemonEvolutionChain,
-  GetPokemonSpecyDetail,
-} from "./api/detail";
 import { useRouter } from "next/router";
 import { getPathId } from "../../utils/useQuery";
 import { Chain } from "../../interfaces/pokemon";
@@ -14,6 +8,10 @@ import EvolutionChart from "@/components/evolution-chart";
 import TablePokemonStats from "@/components/table-pokemon-stats";
 import PokemonPropertyTable from "@/components/pokemon-property";
 import Navbar from "@/components/navbar";
+import GetPokemonSpecyDetail from "./api/specy-detail";
+import GetPokemonEvolutionChain from "./api/evolution-chain";
+import GetPokemonDetails from "./api/details";
+import GetPokemonDetail from "./api/detail";
 
 const mapRecursiveEvolutionChain = (
   pokemonEvolutionChainData: Chain,
@@ -172,15 +170,14 @@ export default function PokemonDetail() {
 
               {/* Stats Pokemon */}
               <TablePokemonStats stats={data?.stats} />
-             
             </div>
 
             {pokemonData?.evolution_chain != null &&
             pokemonEvolutionChainData != null ? (
               <EvolutionChart
-                    pokemonEvolutionChainData={pokemonEvolutionChainData.chain}
-                    pokemonDetails={pokemonDetails}
-                  />
+                pokemonEvolutionChainData={pokemonEvolutionChainData.chain}
+                pokemonDetails={pokemonDetails}
+              />
             ) : (
               <></>
             )}

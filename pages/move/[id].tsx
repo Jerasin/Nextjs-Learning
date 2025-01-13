@@ -1,5 +1,5 @@
 import React from "react";
-import { GetMoveDetail } from "./api/detail";
+import GetMoveDetail from "./api/detail";
 import { useRouter } from "next/router";
 import Badge from "../../components/badge";
 import { getPathId } from "../../utils/useQuery";

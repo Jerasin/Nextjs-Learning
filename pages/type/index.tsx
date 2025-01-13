@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import ListItem from "../../components/list-Item";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
-import { GetPokemonTypeList } from "./api/list";
+import GetPokemonTypeList from "./api/type-list";
 import { PokemonType } from "@/interfaces/pokemon";
 
 export default function TypeList() {

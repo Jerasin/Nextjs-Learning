@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { GetPokemonTypeDetail } from "./api/detail";
+import GetPokemonTypeDetail from "./api/detail";
 import { useRouter } from "next/router";
 import { getPathId } from "../../utils/useQuery";
 import Badge from "../../components/badge";
-import { GetPokemonTypeAll } from "./api/list";
+import GetPokemonTypeAll from "./api/type-list";
 import { PokemonTypeDetail } from "../../interfaces/pokemon";
 import ErrorPage from "../../components/error-page";
 import LoadingPage from "../../components/loading-page";
