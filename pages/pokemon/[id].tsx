@@ -142,7 +142,7 @@ export default function PokemonDetail() {
             </h1>
           </div>
 
-          <div>
+          {/* <div>
             {pokemonData?.varieties?.length > 0 ? (
               pokemonData.varieties.map((item) => {
                 return <h1>{item.pokemon.name}</h1>;
@@ -150,7 +150,7 @@ export default function PokemonDetail() {
             ) : (
               <></>
             )}
-          </div>
+          </div> */}
 
           {/* img Pokemon */}
           <div className="w-auto h-auto flex justify-center">
