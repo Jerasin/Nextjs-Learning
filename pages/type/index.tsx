@@ -1,10 +1,12 @@
 "use client";
-import { GetPokemonTypeList, PokemonType } from "./api/list";
+
 import Pagination from "../../components/pagination";
 import { useSearchParams } from "next/navigation";
 import ListItem from "../../components/list-Item";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
+import { GetPokemonTypeList } from "./api/list";
+import { PokemonType } from "@/interfaces/pokemon";
 
 export default function TypeList() {
   const searchParams = useSearchParams();

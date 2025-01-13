@@ -1,9 +1,9 @@
 import React from "react";
 import { GetMoveDetail } from "./api/detail";
 import { useRouter } from "next/router";
-import PokeomonListBadge from "../../components/pokemon/PokeomonListBadge";
 import Badge from "../../components/badge";
 import { getPathId } from "../../utils/useQuery";
+import PokeomonListBadge from "@/components/pokeomon-list-badge";
 
 export default function MoveDetail() {
   const router = useRouter();
@@ -97,7 +97,11 @@ export default function MoveDetail() {
                           name={data?.damage_class.name}
                           url={data?.damage_class.url}
                           pathname={`/damage-type/${pathdamageType}`}
-                          color={data?.damage_class.name == "physical" ? "red" : "blue"}
+                          color={
+                            data?.damage_class.name == "physical"
+                              ? "red"
+                              : "blue"
+                          }
                         />
                       </div>
                     </td>
