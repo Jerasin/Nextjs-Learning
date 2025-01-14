@@ -9,7 +9,7 @@ type WithAuthHOC = <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => React.FC<P>;
 
-const withAuth: WithAuthHOC = (WrappedComponent) => {
+const privateRoute: WithAuthHOC = (WrappedComponent) => {
   const WithAuth: React.FC<WithAuthProps> = (props) => {
     const router = useRouter();
 
@@ -26,4 +26,4 @@ const withAuth: WithAuthHOC = (WrappedComponent) => {
   return WithAuth;
 };
 
-export default withAuth;
+export default privateRoute;

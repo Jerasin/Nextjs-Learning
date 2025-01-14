@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
 import { GetPokemonTypeList } from "@/lib/api/type/type-list";
 import { PokemonType } from "@/interfaces/pokemon";
-import withAuth from "@/middleware/middleware";
+import privateRoute from "@/middleware/privateRoute";
 
 function TypeList() {
   const searchParams = useSearchParams();
@@ -88,4 +88,4 @@ function TypeList() {
   );
 }
 
-export default withAuth(TypeList);
+export default privateRoute(TypeList);

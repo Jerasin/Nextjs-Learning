@@ -7,7 +7,7 @@ import Navbar from "../../components/navbar";
 import ListItem from "../../components/list-Item";
 import { Pokemon } from "@/interfaces/pokemon";
 import { GetMoveList } from "@/lib/api/move/list";
-import withAuth from "@/middleware/middleware";
+import privateRoute from "@/middleware/privateRoute";
 
 function MoveList() {
   const searchParams = useSearchParams();
@@ -85,4 +85,4 @@ function MoveList() {
   );
 }
 
-export default withAuth(MoveList);
+export default privateRoute(MoveList);

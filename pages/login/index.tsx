@@ -1,31 +1,9 @@
 "use client";
 import { FormEvent } from "react";
 import { useRouter } from "next/router";
-import withAuth from "@/middleware/middleware";
+import publicRoute from "@/middleware/publicRoute";
 
-// function LoginPage() {
-//   const router = useRouter();
-
-//   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-//     event.preventDefault();
-//     localStorage.setItem("token", "ddd");
-//     router.push("/pokemon");
-//   }
-
-//   return (
-//    <div className="flex flex-row justify-center">
-//      <form className="flex flex-col" onSubmit={handleSubmit}>
-//       <div>
-//       <input type="text" name="email" placeholder="Email" required />
-//       </div>
-//       <input type="password" name="password" placeholder="Password" required />
-//       <button type="submit">Login</button>
-//     </form>
-//    </div>
-//   );
-// }
-
-export default function LoginPage() {
+function LoginPage() {
   const router = useRouter();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -127,3 +105,5 @@ export default function LoginPage() {
     </>
   );
 }
+
+export default publicRoute(LoginPage);
