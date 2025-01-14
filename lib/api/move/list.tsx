@@ -1,11 +1,12 @@
+import { HtttpResponse } from "@/interfaces/http";
 import { ReponseApiPokemon } from "@/interfaces/pokemon";
-import { HtttpResponse } from "../../interfaces/http";
+
 import useSWR from "swr";
 
 const fetcher = (...args: Parameters<typeof fetch>) =>
   fetch(...args).then((res) => res.json());
 
-const GetMoveList = (
+export const GetMoveList = (
   page = 1,
   page_size = 10
 ): HtttpResponse<ReponseApiPokemon> => {
@@ -21,5 +22,3 @@ const GetMoveList = (
     isLoading,
   };
 };
-
-export default GetMoveList;

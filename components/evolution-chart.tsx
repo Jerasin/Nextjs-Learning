@@ -4,6 +4,7 @@ import React from "react";
 import LoadingPage from "./loading-page";
 import getPathId from "@/utils/useQuery";
 import FailedPage from "./failed-page";
+import Image from "next/image";
 
 interface EvolutionChartProps {
   pokemonEvolutionChainData: Chain;
@@ -104,10 +105,17 @@ const renderEvolution = (
               pathname: `${src?.id}`,
             }}
           >
-            <img
+            {/* <img
               src={src?.sprites?.front_default}
               alt="No Image"
               className="block w-full h-full object-cover"
+            /> */}
+            <Image
+              className="block w-full h-full object-cover"
+              src={src?.sprites?.front_default || "/placeholder.png"} // ใช้ค่าที่มีอยู่หรือ placeholder ถ้าไม่มี
+              alt="Image Not Found"
+              width={256}  // กำหนด width ที่ต้องการ
+              height={256} // กำหนด height ที่ต้องการ
             />
           </Link>
         </div>

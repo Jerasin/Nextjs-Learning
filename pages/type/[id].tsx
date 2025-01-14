@@ -9,8 +9,8 @@ import LoadingPage from "../../components/loading-page";
 import PokeomonListBadge from "@/components/pokeomon-list-badge";
 import PokemonTypeTable from "@/components/pokemon-type-table";
 import Navbar from "@/components/navbar";
-import GetPokemonTypeDetail from "@/lib/type/detail";
-import GetPokemonTypeAll from "@/lib/type/type-all";
+import { GetPokemonTypeDetail } from "@/lib/api/type/detail";
+import {GetPokemonTypeAll} from "@/lib/api/type/type-all";
 
 export default function PokemonType() {
   const router = useRouter();

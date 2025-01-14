@@ -1,13 +1,11 @@
 import { HtttpResponse } from "@/interfaces/http";
-import { PokemonSpecyDetail } from "@/interfaces/pokemon";
+import { PokemonDetail } from "@/interfaces/pokemon";
 import { fetcher } from "@/utils/useFetch";
 import useSWR from "swr";
 
-export default (
-  pokemonId: number | null
-): HtttpResponse<PokemonSpecyDetail> => {
+export const GetPokemonDetail = (pokemonId: number | null): HtttpResponse<PokemonDetail> => {
   const url = pokemonId
-    ? `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`
+    ? `https://pokeapi.co/api/v2/pokemon/${pokemonId}/`
     : null;
   const { data, error, isLoading } = useSWR(url, fetcher);
 

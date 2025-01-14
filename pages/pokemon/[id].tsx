@@ -8,10 +8,11 @@ import EvolutionChart from "@/components/evolution-chart";
 import TablePokemonStats from "@/components/table-pokemon-stats";
 import PokemonPropertyTable from "@/components/pokemon-property";
 import Navbar from "@/components/navbar";
-import GetPokemonSpecyDetail from "@/lib/pokemon/specy-detail";
-import GetPokemonEvolutionChain from "@/lib/pokemon/evolution-chain";
-import GetPokemonDetails from "@/lib/pokemon/details";
-import GetPokemonDetail from "@/lib/pokemon/detail";
+import { GetPokemonSpecyDetail } from "@/lib/api/pokemon/specy-detail";
+import { GetPokemonEvolutionChain } from "@/lib/api/pokemon/evolution-chain";
+import { GetPokemonDetails } from "@/lib/api/pokemon/details";
+import { GetPokemonDetail } from "@/lib/api/pokemon/detail";
+import Image from "next/image";
 
 const mapRecursiveEvolutionChain = (
   pokemonEvolutionChainData: Chain,
@@ -45,65 +46,17 @@ export default function PokemonDetail() {
   const pokemonId = parseInt(router?.query?.id as any);
   const { data, error, isLoading } = GetPokemonDetail(pokemonId);
 
-  useEffect(() => {
-    if (data?.species?.url) {
-      const id = getPathId(data?.species?.url);
-
-      if (id != null) {
-        setSpeciesId(parseInt(id));
-      }
-    }
-  }, [data]);
-
   const {
     data: pokemonData,
     error: pokemonError,
     isLoading: pokemonIsLoading,
   } = GetPokemonSpecyDetail(speciesId);
 
-  useEffect(() => {
-    if (pokemonData && pokemonData.evolution_chain.url) {
-      const query = getPathId(pokemonData.evolution_chain.url);
-      if (query != null) {
-        setEvolutionChainId(parseInt(query));
-      }
-
-      if (pokemonData.varieties.length > 0) {
-        const varietyIds = pokemonData.varieties
-          .map((i) => {
-            const id = getPathId(i.pokemon.url);
-            if (id != null) {
-              return parseInt(id);
-            }
-          })
-          .filter((i) => i != null);
-        setVarieties(varietyIds);
-      }
-    }
-  }, [pokemonData]);
-
   const {
     data: pokemonEvolutionChainData,
     error: pokemonEvolutionChainError,
     isLoading: pokemonEvolutionChainIsLoading,
   } = GetPokemonEvolutionChain(evolutionChainId);
-
-  useEffect(() => {
-    if (pokemonEvolutionChainData != null) {
-      console.log("pokemonEvolutionChainData", pokemonEvolutionChainData);
-      const evolutionChainListTemp: number[] = [];
-      const id = getPathId(pokemonEvolutionChainData.chain.species.url);
-
-      if (id != null) {
-        evolutionChainListTemp.push(parseInt(id));
-      }
-
-      const cache: number[] = [];
-      mapRecursiveEvolutionChain(pokemonEvolutionChainData.chain, cache);
-      console.log("cache", cache);
-      setEvolutionChainList(cache);
-    }
-  }, [pokemonEvolutionChainData]);
 
   const {
     data: pokemonDetails,
@@ -117,14 +70,61 @@ export default function PokemonDetail() {
     isLoading: pokemonVarietiesIsLoading,
   } = GetPokemonDetails(varieties);
 
-  if (
+  useEffect(() => {
+    const fetchData = async () => {
+      if (data?.species?.url) {
+        const id = getPathId(data?.species?.url);
+        if (id != null) setSpeciesId(parseInt(id));
+      }
+
+      if (pokemonData) {
+        // Set Evolution Chain ID
+        if (pokemonData.evolution_chain.url) {
+          const query = getPathId(pokemonData.evolution_chain.url);
+          if (query != null) {
+            setEvolutionChainId(parseInt(query));
+          }
+        }
+
+        // Set varieties
+        if (pokemonData.varieties.length > 0) {
+          const varietyIds = pokemonData.varieties
+            .map((i) => {
+              const id = getPathId(i.pokemon.url);
+              return id != null ? parseInt(id) : null;
+            })
+            .filter((i) => i != null);
+          setVarieties(varietyIds);
+        }
+      }
+
+      if (pokemonEvolutionChainData != null) {
+        const evolutionChainListTemp: number[] = [];
+        const id = getPathId(pokemonEvolutionChainData.chain.species.url);
+        if (id != null) {
+          evolutionChainListTemp.push(parseInt(id));
+        }
+
+        const cache: number[] = [];
+        mapRecursiveEvolutionChain(pokemonEvolutionChainData.chain, cache);
+        setEvolutionChainList(cache);
+      }
+    };
+
+    if (data) {
+      fetchData();
+    }
+  }, [data, pokemonData, pokemonEvolutionChainData]);
+
+  const isAllLoading =
     isLoading ||
     pokemonIsLoading ||
     pokemonEvolutionChainIsLoading ||
     pokemonDetailsIsLoading ||
-    pokemonVarietiesIsLoading
-  ) {
-    return LoadingPage();
+    pokemonVarietiesIsLoading;
+
+  if (isAllLoading) {
+    LoadingPage();
   }
 
   if (
@@ -134,10 +134,8 @@ export default function PokemonDetail() {
     pokemonDetailsError ||
     pokemonVarietiesError
   ) {
-    return FailedPage();
+    FailedPage();
   }
-
-  console.log("pokemonVarieties", pokemonVarieties);
 
   return (
     <>
@@ -151,22 +149,19 @@ export default function PokemonDetail() {
             </h1>
           </div>
 
-          {/* <div>
-            {pokemonData?.varieties?.length > 0 ? (
-              pokemonData.varieties.map((item) => {
-                return <h1>{item.pokemon.name}</h1>;
-              })
-            ) : (
-              <></>
-            )}
-          </div> */}
-
           {/* img Pokemon */}
           <div className="w-auto h-auto flex justify-center">
-            <img
+            {/* <img
               className="block w-auto h-64"
               src={`${data?.sprites?.front_default}`}
               alt="Image Not Found"
+            /> */}
+            <Image
+              className="block w-auto h-64"
+              src={data?.sprites?.front_default || "/placeholder.png"} // ใช้ค่าที่มีอยู่หรือ placeholder ถ้าไม่มี
+              alt="Image Not Found"
+              width={256}  // กำหนด width ที่ต้องการ
+              height={256} // กำหนด height ที่ต้องการ
             />
           </div>
 
@@ -178,19 +173,16 @@ export default function PokemonDetail() {
                 data={data}
                 pokemonId={pokemonId}
               />
-
               {/* Stats Pokemon */}
               <TablePokemonStats stats={data?.stats} />
             </div>
 
-            {pokemonData?.evolution_chain != null &&
-            pokemonEvolutionChainData != null ? (
+            {/* Evolution Chart */}
+            {pokemonData?.evolution_chain && pokemonEvolutionChainData && (
               <EvolutionChart
                 pokemonEvolutionChainData={pokemonEvolutionChainData.chain}
                 pokemonDetails={pokemonDetails}
               />
-            ) : (
-              <></>
             )}
 
             <div className="flex justify-center m-10">
@@ -198,7 +190,7 @@ export default function PokemonDetail() {
                 <div className="flex-auto bg-red-500">
                   <button
                     className="border border-solid rounded-lg p-2"
-                    onClick={(e) => router.back()}
+                    onClick={() => router.back()}
                   >
                     Back
                   </button>

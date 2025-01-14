@@ -1,15 +1,14 @@
 import { HtttpResponse } from "@/interfaces/http";
-import { EvolutionChain } from "@/interfaces/pokemon";
+import { PokemonSpecyDetail } from "@/interfaces/pokemon";
 import { fetcher } from "@/utils/useFetch";
 import useSWR from "swr";
 
-export default (pokemonId: number | null): HtttpResponse<EvolutionChain> => {
+export const GetPokemonSpecyDetail = (
+  pokemonId: number | null
+): HtttpResponse<PokemonSpecyDetail> => {
   const url = pokemonId
-    ? `https://pokeapi.co/api/v2/evolution-chain/${pokemonId}/`
+    ? `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`
     : null;
-
-  // console.log("GetPokemonEvolutionChain url", url);
-
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   return {

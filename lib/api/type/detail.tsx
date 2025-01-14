@@ -4,7 +4,7 @@ import { fetcher } from "@/utils/useFetch";
 import useSWR from "swr";
 
 
-export default (typeId: number | null): HtttpResponse<PokemonTypeDetail> => {
+export const GetPokemonTypeDetail =  (typeId: number | null): HtttpResponse<PokemonTypeDetail> => {
   const url = typeId ? `https://pokeapi.co/api/v2/type/${typeId}/` : null;
   const { data, error, isLoading } = useSWR(url, fetcher);
 

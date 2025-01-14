@@ -3,7 +3,10 @@ import { ReponseApiPokemon } from "@/interfaces/pokemon";
 import { fetcher } from "@/utils/useFetch";
 import useSWR from "swr";
 
-export default (page = 1, page_size = 10): HtttpResponse<ReponseApiPokemon> => {
+export const GetPokemonTypeList = (
+  page = 1,
+  page_size = 10
+): HtttpResponse<ReponseApiPokemon> => {
   const offset = (page - 1) * page_size;
   const limit = page_size;
 

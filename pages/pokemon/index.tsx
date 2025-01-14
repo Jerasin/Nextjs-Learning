@@ -5,7 +5,7 @@ import ListItem from "../../components/list-Item";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
 import { Pokemon } from "../../interfaces/pokemon";
-import GetPokemonList from "@/lib/pokemon/list";
+import GetPokemonList from "@/lib/api/pokemon/list";
 
 export default function PokemonList() {
   const searchParams = useSearchParams();

@@ -3,7 +3,9 @@ import { PokemonDetail } from "@/interfaces/pokemon";
 import { fetchers } from "@/utils/useFetch";
 import useSWR from "swr";
 
-export default (pokemonId: number[] | null): HtttpResponse<PokemonDetail[]> => {
+export const GetPokemonDetails = (
+  pokemonId: number[] | null
+): HtttpResponse<PokemonDetail[]> => {
   const urls =
     pokemonId != null && pokemonId?.length > 0
       ? pokemonId

@@ -30,7 +30,7 @@ export interface GetMoveDetailInterface {
 const fetcher = (...args: Parameters<typeof fetch>) =>
   fetch(...args).then((res) => res.json());
 
-const GetMoveDetail = (
+export const GetMoveDetail = (
   moveId: number | null
 ): HtttpResponse<GetMoveDetailInterface | undefined> => {
   const url = moveId ? `https://pokeapi.co/api/v2/move/${moveId}/` : null;
@@ -43,4 +43,4 @@ const GetMoveDetail = (
   };
 };
 
-export default GetMoveDetail;
+
