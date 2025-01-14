@@ -131,7 +131,7 @@ const renderEvolution = (
       </div>
 
       {chain.evolves_to.length > 0 && (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-row 2xl:flex-col items-center">
           {chain.evolves_to.map((evolution: Evolvesto, index: number) => (
             <div key={index} className="flex flex-col items-center">
               {renderEvolution(evolution, pokemonDetails, count + 1)}
