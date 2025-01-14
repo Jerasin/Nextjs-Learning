@@ -37,6 +37,10 @@ const renderEvolution = (
     chain.evolution_details.length > 0
       ? chain?.evolution_details[0]?.min_level ?? null
       : null;
+  const min_happiness =
+    chain.evolution_details.length > 0
+      ? chain?.evolution_details[0]?.min_happiness ?? null
+      : null;
   const id = getPathId(chain.species.url);
 
   if (id == null) {
@@ -44,17 +48,14 @@ const renderEvolution = (
     return;
   }
 
-  console.log("id", id);
   const src = pokemonDetails.find((item) => item.id == parseInt(id));
-  const condition =
-    (min_level && evolutionTrggier && count > 1) ||
-    (evolutionItem && evolutionTrggier && count > 1) ||
-    (evolutionHeldItem && evolutionTrggier && count > 1);
-
+  const condition = count > 1 && evolutionTrggier;
+  const containerText = `flex flex-col text-center min-w-56 min-h-32 w-1/${count}`;
+  const containerForm = `flex justify-center min-w-56 min-h-32 items-center w-1/${count}`;
   return (
     <div className="w-auto flex items-center">
       {condition ? (
-        <div className="flex flex-col text-center">
+        <div className={containerText}>
           {count > 1 ? <i className="fa-solid fa-arrow-right"></i> : <></>}
 
           <div className="w-full">
@@ -89,14 +90,25 @@ const renderEvolution = (
             ) : (
               <></>
             )}
+
+            {min_happiness ? (
+              <div>
+                <span className="text-md font-bold">
+                  happiness: {min_happiness}
+                </span>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       ) : (
         <></>
       )}
 
-      <div className="flex justify-center items-center w-56 h-32">
-        <div className="flex flex-col text-center">
+
+      <div className={containerForm}>
+        <div className="w-full  flex flex-col text-center">
           <span className="text-lg font-bold">{speciesName}</span>
 
           <Link
@@ -112,9 +124,9 @@ const renderEvolution = (
             /> */}
             <Image
               className="block w-full h-full object-cover"
-              src={src?.sprites?.front_default || "/placeholder.png"} // ใช้ค่าที่มีอยู่หรือ placeholder ถ้าไม่มี
+              src={src?.sprites?.front_default || "/images/placeholder.png"} // ใช้ค่าที่มีอยู่หรือ placeholder ถ้าไม่มี
               alt="Image Not Found"
-              width={256}  // กำหนด width ที่ต้องการ
+              width={256} // กำหนด width ที่ต้องการ
               height={256} // กำหนด height ที่ต้องการ
             />
           </Link>
@@ -142,7 +154,9 @@ export default function EvolutionChart(props: EvolutionChartProps) {
   }
   return (
     <div className="w-full px-5 flex flex-col justify-center items-center">
-      <h1 className="font-bold text-3xl mb-6">EvolutionChart</h1>
+      <div className="my-12">
+        <h1 className="font-bold text-3xl mb-6">EvolutionChart</h1>
+      </div>
       <div className="flex flex-col md:flex-row w-full justify-center items-center">
         {renderEvolution(pokemonEvolutionChainData, pokemonDetails, 1)}
       </div>

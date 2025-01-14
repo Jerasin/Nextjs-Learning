@@ -1,11 +1,14 @@
+"use client";
+
 import React from "react";
 import { useRouter } from "next/router";
 import Badge from "@/components/badge";
 import getPathId from "@/utils/useQuery";
 import PokeomonListBadge from "@/components/pokeomon-list-badge";
 import { GetMoveDetail } from "@/lib/api/move/detail";
+import withAuth from "@/middleware/middleware";
 
-export default function MoveDetail() {
+function MoveDetail() {
   const router = useRouter();
   const pokemonId = parseInt(router?.query?.id as any);
   const { data, error, isLoading } = GetMoveDetail(pokemonId);
@@ -149,3 +152,5 @@ export default function MoveDetail() {
     </div>
   );
 }
+
+export default withAuth(MoveDetail);

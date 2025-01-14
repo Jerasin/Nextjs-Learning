@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
-  // ใช้ useState สำหรับการจัดการการเปิด/ปิดเมนูในมือถือ
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
 
-  // ฟังก์ชันสำหรับสลับสถานะของเมนู
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -85,6 +85,11 @@ export default function Navbar() {
             </li>
             <li>
               <a
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  router.push("/")
+
+                }}
                 href="#"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >

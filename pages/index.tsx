@@ -14,6 +14,10 @@ export default function Home() {
         <li>
           <Link href="/pokemon">Pokemon Page</Link>
         </li>
+
+        <li>
+          <Link href="/login">Login Page</Link>
+        </li>
       </ul>
     </main>
   );

@@ -7,8 +7,9 @@ import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
 import { GetPokemonTypeList } from "@/lib/api/type/type-list";
 import { PokemonType } from "@/interfaces/pokemon";
+import withAuth from "@/middleware/middleware";
 
-export default function TypeList() {
+function TypeList() {
   const searchParams = useSearchParams();
   const paramsPage = parseInt(searchParams.get("page") ?? "1");
   const paramsPageSize = parseInt(searchParams.get("pageSize") ?? "5");
@@ -86,3 +87,5 @@ export default function TypeList() {
     </>
   );
 }
+
+export default withAuth(TypeList);

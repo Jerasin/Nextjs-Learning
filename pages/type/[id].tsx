@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import getPathId from "../../utils/useQuery";
@@ -10,9 +11,10 @@ import PokeomonListBadge from "@/components/pokeomon-list-badge";
 import PokemonTypeTable from "@/components/pokemon-type-table";
 import Navbar from "@/components/navbar";
 import { GetPokemonTypeDetail } from "@/lib/api/type/detail";
-import {GetPokemonTypeAll} from "@/lib/api/type/type-all";
+import { GetPokemonTypeAll } from "@/lib/api/type/type-all";
+import withAuth from "@/middleware/middleware";
 
-export default function PokemonType() {
+function PokemonType() {
   const router = useRouter();
   const [typeId, setTypeId] = useState<number | null>(null);
   const [types, setTypes] = useState<any[]>([]);
@@ -171,3 +173,5 @@ export default function PokemonType() {
     </>
   );
 }
+
+export default withAuth(PokemonType);

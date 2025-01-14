@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import getPathId from "../../utils/useQuery";
@@ -13,6 +15,8 @@ import { GetPokemonEvolutionChain } from "@/lib/api/pokemon/evolution-chain";
 import { GetPokemonDetails } from "@/lib/api/pokemon/details";
 import { GetPokemonDetail } from "@/lib/api/pokemon/detail";
 import Image from "next/image";
+import Link from "next/link";
+import withAuth from "@/middleware/middleware";
 
 const mapRecursiveEvolutionChain = (
   pokemonEvolutionChainData: Chain,
@@ -35,7 +39,7 @@ const mapRecursiveEvolutionChain = (
   }
 };
 
-export default function PokemonDetail() {
+function PokemonDetail() {
   const [evolutionChainId, setEvolutionChainId] = useState<number | null>(null);
   const [evolutionChainList, setEvolutionChainList] = useState<number[] | null>(
     null
@@ -143,7 +147,39 @@ export default function PokemonDetail() {
 
       <div className="flex flex-row justify-center">
         <div className="w-5/6">
-          <div className="justify-center">
+          {pokemonData?.varieties.length > 1 ? (
+            <div className="flex mt-12 mx-10 bg-white rounded-lg">
+              {pokemonData?.varieties.map((i) => {
+                const pokemonId = getPathId(i.pokemon.url);
+                if (i.pokemon.name == data?.name) {
+                  return (
+                    <div
+                      key={i.pokemon.name}
+                      className="p-4 mx-4 bg-violet-600 rounded-md cursor-pointer text-white"
+                    >
+                      <h1 className="">{i.pokemon.name}</h1>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <Link
+                      key={i.pokemon.name}
+                      className="p-4 mx-4 hover:bg-violet-600 rounded-md cursor-pointer"
+                      href={{
+                        pathname: `${pokemonId}`,
+                      }}
+                    >
+                      <h1>{i.pokemon.name}</h1>
+                    </Link>
+                  );
+                }
+              })}
+            </div>
+          ) : (
+            <></>
+          )}
+
+          <div className="mt-8 justify-center">
             <h1 className="text-center font-bold text-3xl pt-10">
               {data?.name}
             </h1>
@@ -151,16 +187,11 @@ export default function PokemonDetail() {
 
           {/* img Pokemon */}
           <div className="w-auto h-auto flex justify-center">
-            {/* <img
-              className="block w-auto h-64"
-              src={`${data?.sprites?.front_default}`}
-              alt="Image Not Found"
-            /> */}
             <Image
               className="block w-auto h-64"
-              src={data?.sprites?.front_default || "/placeholder.png"} // ใช้ค่าที่มีอยู่หรือ placeholder ถ้าไม่มี
+              src={data?.sprites?.front_default || "/images/placeholder.png"} // ใช้ค่าที่มีอยู่หรือ placeholder ถ้าไม่มี
               alt="Image Not Found"
-              width={256}  // กำหนด width ที่ต้องการ
+              width={256} // กำหนด width ที่ต้องการ
               height={256} // กำหนด height ที่ต้องการ
             />
           </div>
@@ -203,3 +234,5 @@ export default function PokemonDetail() {
     </>
   );
 }
+
+export default withAuth(PokemonDetail);

@@ -1,4 +1,5 @@
 "use client";
+
 import Pagination from "../../components/pagination";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -6,8 +7,9 @@ import Navbar from "../../components/navbar";
 import ListItem from "../../components/list-Item";
 import { Pokemon } from "@/interfaces/pokemon";
 import { GetMoveList } from "@/lib/api/move/list";
+import withAuth from "@/middleware/middleware";
 
-export default function MoveList() {
+function MoveList() {
   const searchParams = useSearchParams();
   const paramsPage = parseInt(searchParams.get("page") ?? "1");
   const paramsPageSize = parseInt(searchParams.get("pageSize") ?? "5");
@@ -82,3 +84,5 @@ export default function MoveList() {
     </>
   );
 }
+
+export default withAuth(MoveList);
