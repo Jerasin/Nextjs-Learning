@@ -148,7 +148,7 @@ function PokemonDetail() {
       <div className="flex flex-row justify-center">
         <div className="w-5/6">
           {pokemonData?.varieties.length > 1 ? (
-            <div className="flex mt-12 mx-10 bg-white rounded-lg">
+            <div className="flex mt-12 mx-8 2xl:mx-10 bg-white rounded-lg">
               {pokemonData?.varieties.map((i) => {
                 const pokemonId = getPathId(i.pokemon.url);
                 if (i.pokemon.name == data?.name) {
@@ -157,7 +157,7 @@ function PokemonDetail() {
                       key={i.pokemon.name}
                       className="p-4 mx-4 bg-violet-600 rounded-md cursor-pointer text-white"
                     >
-                      <h1 className="">{i.pokemon.name}</h1>
+                      <h1 className="truncate">{i.pokemon.name}</h1>
                     </div>
                   );
                 } else {
@@ -169,7 +169,7 @@ function PokemonDetail() {
                         pathname: `${pokemonId}`,
                       }}
                     >
-                      <h1>{i.pokemon.name}</h1>
+                      <h1 className="truncate">{i.pokemon.name}</h1>
                     </Link>
                   );
                 }
@@ -179,7 +179,7 @@ function PokemonDetail() {
             <></>
           )}
 
-          <div className="mt-8 justify-center">
+          <div className="mt-8 justify-center my-10">
             <h1 className="text-center font-bold text-3xl pt-10">
               {data?.name}
             </h1>

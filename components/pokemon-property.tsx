@@ -13,6 +13,7 @@ export default function PokemonPropertyTable(
   props: PokemonPropertyTableInterface
 ) {
   const { pokemonData, data, pokemonId } = props;
+  const x: string[] = [];
 
   return (
     <div className="w-auto md:flex items-start  md:flex-row basis-1/2 justify-center">
@@ -128,14 +129,15 @@ export default function PokemonPropertyTable(
                     <td className="border border-black">
                       <div className="p-5 overflow-auto max-h-48 h-auto">
                         {data?.abilities?.map((i: any) => {
-                          // console.log("move", i);
-
-                          return (
-                            <PokeomonListBadge
-                              key={i.ability.name}
-                              move={i.ability}
-                            />
-                          );
+                          if (!x.includes(i.ability.name)) {
+                            x.push(i.ability.name);
+                            return (
+                              <PokeomonListBadge
+                                key={`${i.ability.name}-${i.slot}`}
+                                move={i.ability}
+                              />
+                            );
+                          }
                         }) ?? []}
                       </div>
                     </td>

@@ -50,13 +50,15 @@ const renderEvolution = (
 
   const src = pokemonDetails.find((item) => item.id == parseInt(id));
   const condition = count > 1 && evolutionTrggier;
-  const containerText = `flex flex-col text-center min-w-56 min-h-32 w-1/${count}`;
+  const containerText = `flex flex-col justify-center text-center min-w-56 min-h-32 w-1/${count}`;
   const containerForm = `flex justify-center min-w-56 min-h-32 items-center w-1/${count}`;
   return (
-    <div className="w-auto flex items-center">
+    <div className="w-auto flex flex-col 2xl:flex-row items-center">
       {condition ? (
         <div className={containerText}>
-          {count > 1 ? <i className="fa-solid fa-arrow-right"></i> : <></>}
+          {count > 1 ? <div className="2xl:block hidden"><i className="fa-solid fa-arrow-right"></i> </div>: <></>}
+
+          {count > 1 ? <div className="2xl:hidden"><i className="fa-solid fa-arrow-down"></i> </div>: <></>}
 
           <div className="w-full">
             {min_level ? (
@@ -117,11 +119,6 @@ const renderEvolution = (
               pathname: `${src?.id}`,
             }}
           >
-            {/* <img
-              src={src?.sprites?.front_default}
-              alt="No Image"
-              className="block w-full h-full object-cover"
-            /> */}
             <Image
               className="block w-full h-full object-cover"
               src={src?.sprites?.front_default || "/images/placeholder.png"} // ใช้ค่าที่มีอยู่หรือ placeholder ถ้าไม่มี
