@@ -1,5 +1,5 @@
+import { HtttpResponse } from "@/interfaces/http";
 import useSWR from "swr";
-import { HtttpResponse } from "../../../interfaces/http";
 
 export interface GetMoveDetailType {
   name: string;
@@ -30,7 +30,7 @@ export interface GetMoveDetailInterface {
 const fetcher = (...args: Parameters<typeof fetch>) =>
   fetch(...args).then((res) => res.json());
 
-export default (
+const GetMoveDetail = (
   moveId: number | null
 ): HtttpResponse<GetMoveDetailInterface | undefined> => {
   const url = moveId ? `https://pokeapi.co/api/v2/move/${moveId}/` : null;
@@ -42,3 +42,5 @@ export default (
     isLoading,
   };
 };
+
+export default GetMoveDetail;

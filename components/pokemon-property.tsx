@@ -1,7 +1,7 @@
 import { PokemonDetail, PokemonSpecyDetail } from "@/interfaces/pokemon";
 import React from "react";
 import PokeomonListBadge from "./pokeomon-list-badge";
-import { getPathId } from "@/utils/useQuery";
+import getPathId from "@/utils/useQuery";
 
 interface PokemonPropertyTableInterface {
   pokemonData: PokemonSpecyDetail;

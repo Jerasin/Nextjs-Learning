@@ -1,6 +1,6 @@
 import { CardLayoutV2, CardLayout } from "./layout";
 import Link from "next/link";
-import { getPathId } from "../utils/useQuery";
+import getPathId from "../utils/useQuery";
 
 interface ListItemProps {
   itemList: Array<any>;

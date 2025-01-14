@@ -1,10 +1,11 @@
 "use client";
-import { GetMoveList, Pokemon } from "./api/list";
+import GetMoveList from "../../lib/move/list";
 import Pagination from "../../components/pagination";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
 import ListItem from "../../components/list-Item";
+import { Pokemon } from "@/interfaces/pokemon";
 
 export default function MoveList() {
   const searchParams = useSearchParams();

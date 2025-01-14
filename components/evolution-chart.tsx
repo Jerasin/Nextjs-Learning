@@ -2,7 +2,8 @@ import { Chain, Evolvesto, PokemonDetail } from "@/interfaces/pokemon";
 import Link from "next/link";
 import React from "react";
 import LoadingPage from "./loading-page";
-import { getPathId } from "@/utils/useQuery";
+import getPathId from "@/utils/useQuery";
+import FailedPage from "./failed-page";
 
 interface EvolutionChartProps {
   pokemonEvolutionChainData: Chain;
@@ -36,6 +37,12 @@ const renderEvolution = (
       ? chain?.evolution_details[0]?.min_level ?? null
       : null;
   const id = getPathId(chain.species.url);
+
+  if (id == null) {
+    <FailedPage />;
+    return;
+  }
+
   console.log("id", id);
   const src = pokemonDetails.find((item) => item.id == parseInt(id));
   const condition =

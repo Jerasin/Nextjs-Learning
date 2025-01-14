@@ -205,3 +205,13 @@ export interface Trigger {
   name: string;
   url: string;
 }
+
+export interface Pokemon {
+  name: string;
+  url: string;
+}
+
+export interface ReponseApiPokemon {
+  count: number;
+  results: Pokemon[];
+}

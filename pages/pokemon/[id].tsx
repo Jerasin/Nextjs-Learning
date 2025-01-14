@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getPathId } from "../../utils/useQuery";
+import getPathId from "../../utils/useQuery";
 import { Chain } from "../../interfaces/pokemon";
 import LoadingPage from "../../components/loading-page";
 import FailedPage from "../../components/failed-page";
@@ -8,10 +8,10 @@ import EvolutionChart from "@/components/evolution-chart";
 import TablePokemonStats from "@/components/table-pokemon-stats";
 import PokemonPropertyTable from "@/components/pokemon-property";
 import Navbar from "@/components/navbar";
-import GetPokemonSpecyDetail from "./api/specy-detail";
-import GetPokemonEvolutionChain from "./api/evolution-chain";
-import GetPokemonDetails from "./api/details";
-import GetPokemonDetail from "./api/detail";
+import GetPokemonSpecyDetail from "@/lib/pokemon/specy-detail";
+import GetPokemonEvolutionChain from "@/lib/pokemon/evolution-chain";
+import GetPokemonDetails from "@/lib/pokemon/details";
+import GetPokemonDetail from "@/lib/pokemon/detail";
 
 const mapRecursiveEvolutionChain = (
   pokemonEvolutionChainData: Chain,
@@ -21,7 +21,10 @@ const mapRecursiveEvolutionChain = (
 
   if (pokemonEvolutionChainData?.species != null) {
     const id = getPathId(pokemonEvolutionChainData?.species.url);
-    cache.push(parseInt(id));
+
+    if (id != null) {
+      cache.push(parseInt(id));
+    }
   }
 
   if (pokemonEvolutionChainData?.evolves_to?.length > 0) {
@@ -45,7 +48,10 @@ export default function PokemonDetail() {
   useEffect(() => {
     if (data?.species?.url) {
       const id = getPathId(data?.species?.url);
-      setSpeciesId(parseInt(id));
+
+      if (id != null) {
+        setSpeciesId(parseInt(id));
+      }
     }
   }, [data]);
 
@@ -63,9 +69,14 @@ export default function PokemonDetail() {
       }
 
       if (pokemonData.varieties.length > 0) {
-        const varietyIds = pokemonData.varieties.map((i) =>
-          parseInt(getPathId(i.pokemon.url))
-        );
+        const varietyIds = pokemonData.varieties
+          .map((i) => {
+            const id = getPathId(i.pokemon.url);
+            if (id != null) {
+              return parseInt(id);
+            }
+          })
+          .filter((i) => i != null);
         setVarieties(varietyIds);
       }
     }

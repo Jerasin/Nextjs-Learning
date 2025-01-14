@@ -1,6 +1,6 @@
-import { ValidationError } from "./constantError";
+import ValidationError from "./constantError";
 
-export const getPathId = (url?: string) => {
+const getPathId = (url?: string) => {
   // console.log("url",url);
   const getPathId = url?.split("/") ?? [];
 
@@ -11,8 +11,7 @@ export const getPathId = (url?: string) => {
     return getPathId[6];
   }
 
-  throw new ValidationError(
-    "getPathId error",
-    JSON.stringify(getPathId.length)
-  );
+  return null
 };
+
+export default getPathId;

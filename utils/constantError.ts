@@ -1,8 +1,13 @@
-export class ValidationError extends Error {
+class ValidationError extends Error {
   debug?: string;
   constructor(message: string, debug?: string) {
     super(message);
     this.name = "ValidationError";
-    this.debug = debug;
+    if (debug) {
+      this.debug = debug;
+    }
+    Object.setPrototypeOf(this, ValidationError.prototype); // กำหนด prototype ให้ถูกต้อง
   }
 }
+
+export default ValidationError;

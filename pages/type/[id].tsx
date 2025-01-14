@@ -1,16 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import GetPokemonTypeDetail from "./api/detail";
 import { useRouter } from "next/router";
-import { getPathId } from "../../utils/useQuery";
+import getPathId from "../../utils/useQuery";
 import Badge from "../../components/badge";
-import GetPokemonTypeAll from "./api/type-list";
 import { PokemonTypeDetail } from "../../interfaces/pokemon";
 import ErrorPage from "../../components/error-page";
 import LoadingPage from "../../components/loading-page";
 import PokeomonListBadge from "@/components/pokeomon-list-badge";
 import PokemonTypeTable from "@/components/pokemon-type-table";
 import Navbar from "@/components/navbar";
+import GetPokemonTypeDetail from "@/lib/type/detail";
+import GetPokemonTypeAll from "@/lib/type/type-all";
 
 export default function PokemonType() {
   const router = useRouter();
@@ -29,7 +29,10 @@ export default function PokemonType() {
   useEffect(() => {
     if (data?.move_damage_class?.url) {
       const pathTypeId = getPathId(data?.move_damage_class?.url);
-      setTypeId(parseInt(pathTypeId));
+
+      if (pathTypeId != null) {
+        setTypeId(parseInt(pathTypeId));
+      }
     }
 
     if (data && dataTypeAll) {

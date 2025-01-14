@@ -1,11 +1,11 @@
 "use client";
-import { GetPokemonList } from "./api/list";
 import Pagination from "../../components/pagination";
 import { useSearchParams } from "next/navigation";
 import ListItem from "../../components/list-Item";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
 import { Pokemon } from "../../interfaces/pokemon";
+import GetPokemonList from "@/lib/pokemon/list";
 
 export default function PokemonList() {
   const searchParams = useSearchParams();
@@ -91,11 +91,11 @@ export default function PokemonList() {
   //           PokemonList Page
   //         </h1>
   //       </div>
-  
+
   //       <div className="flex flex-row justify-center">
   //         <ListItem itemList={pokemonList} pathName="/pokemon" />
   //       </div>
-  
+
   //       <div className="flex flex-row justify-center p-2">
   //         <Pagination
   //           page={paramsPage}
@@ -108,5 +108,4 @@ export default function PokemonList() {
   //     </main>
   //   </>
   // );
-  
 }

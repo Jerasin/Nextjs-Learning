@@ -1,7 +1,7 @@
+import { HtttpResponse } from "@/interfaces/http";
+import { PokemonDetail } from "@/interfaces/pokemon";
+import { fetcher } from "@/utils/useFetch";
 import useSWR from "swr";
-import { HtttpResponse } from "../../../interfaces/http";
-import { PokemonDetail } from "../../../interfaces/pokemon";
-import { fetcher } from "../../../utils/useFetch";
 
 export default (pokemonId: number | null): HtttpResponse<PokemonDetail> => {
   const url = pokemonId

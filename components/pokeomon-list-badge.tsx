@@ -1,4 +1,4 @@
-import { getPathId } from "@/utils/useQuery";
+import getPathId from "@/utils/useQuery";
 import React from "react";
 import Badge from "./badge";
 
