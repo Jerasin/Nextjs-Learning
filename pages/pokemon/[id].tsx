@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import getPathId from "../../utils/useQuery";
 import { Chain } from "../../interfaces/pokemon";
@@ -22,7 +22,7 @@ const mapRecursiveEvolutionChain = (
   pokemonEvolutionChainData: Chain,
   cache: number[]
 ) => {
-  console.log("mapRecursiveEvolutionChain", pokemonEvolutionChainData);
+  // console.log("mapRecursiveEvolutionChain", pokemonEvolutionChainData);
 
   if (pokemonEvolutionChainData?.species != null) {
     const id = getPathId(pokemonEvolutionChainData?.species.url);
@@ -112,6 +112,7 @@ function PokemonDetail() {
         const cache: number[] = [];
         mapRecursiveEvolutionChain(pokemonEvolutionChainData.chain, cache);
         setEvolutionChainList(cache);
+        console.log("cache", cache);
       }
     };
 
@@ -141,20 +142,39 @@ function PokemonDetail() {
     FailedPage();
   }
 
+  const divRef = useRef<HTMLDivElement | null>(null);
+  const pokemonRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  useEffect(() => {
+    if (data?.name && pokemonRefs.current[data.name]) {
+      // ถ้าพบ pokemon ที่ตรงกับ data?.name, เลื่อน scroll ไปยัง pokemon นั้น
+      pokemonRefs.current[data.name]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center", // ทำให้ element อยู่ตรงกลางหน้าจอ
+      });
+    }
+  }, [pokemonData]);
+
   return (
     <>
       <Navbar />
 
       <div className="flex flex-row justify-center">
-        <div className="w-5/6">
+        <div className="w-full lg:w-5/6">
           {pokemonData?.varieties.length > 1 ? (
-            <div className="flex mt-12 mx-8 2xl:mx-10 bg-white rounded-lg">
+            <div
+              className="flex mt-12 mx-8 2xl:mx-10 bg-white rounded-lg overflow-x-auto"
+              ref={divRef}
+            >
               {pokemonData?.varieties.map((i) => {
                 const pokemonId = getPathId(i.pokemon.url);
                 if (i.pokemon.name == data?.name) {
                   return (
                     <div
                       key={i.pokemon.name}
+                      ref={(el) => {
+                        console.log("el", el);
+                        pokemonRefs.current[i.pokemon.name] = el;
+                      }}
                       className="p-4 mx-4 bg-violet-600 rounded-md cursor-pointer text-white"
                     >
                       <h1 className="truncate">{i.pokemon.name}</h1>
@@ -209,12 +229,13 @@ function PokemonDetail() {
             </div>
 
             {/* Evolution Chart */}
-            {pokemonData?.evolution_chain && pokemonEvolutionChainData && (
-              <EvolutionChart
-                pokemonEvolutionChainData={pokemonEvolutionChainData.chain}
-                pokemonDetails={pokemonDetails}
-              />
-            )}
+            {pokemonData?.evolution_chain &&
+              pokemonEvolutionChainData && (
+                <EvolutionChart
+                  pokemonEvolutionChainData={pokemonEvolutionChainData.chain}
+                  pokemonDetails={pokemonDetails}
+                />
+              )}
 
             <div className="flex justify-center m-10">
               <div className="flex flex-row">
