@@ -6,7 +6,7 @@ import Badge from "@/components/badge";
 import getPathId from "@/utils/useQuery";
 import PokeomonListBadge from "@/components/pokeomon-list-badge";
 import { GetMoveDetail } from "@/lib/api/move/detail";
-import privateRoute from "@/middleware/privateRoute";
+
 
 function MoveDetail() {
   const router = useRouter();
@@ -153,4 +153,4 @@ function MoveDetail() {
   );
 }
 
-export default privateRoute(MoveDetail);
+export default MoveDetail

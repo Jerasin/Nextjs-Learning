@@ -12,7 +12,7 @@ import PokemonTypeTable from "@/components/pokemon-type-table";
 import Navbar from "@/components/navbar";
 import { GetPokemonTypeDetail } from "@/lib/api/type/detail";
 import { GetPokemonTypeAll } from "@/lib/api/type/type-all";
-import privateRoute from "@/middleware/privateRoute";
+
 
 function PokemonType() {
   const router = useRouter();
@@ -174,4 +174,4 @@ function PokemonType() {
   );
 }
 
-export default privateRoute(PokemonType);
+export default PokemonType

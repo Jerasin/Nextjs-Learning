@@ -16,7 +16,7 @@ import { GetPokemonDetails } from "@/lib/api/pokemon/details";
 import { GetPokemonDetail } from "@/lib/api/pokemon/detail";
 import Image from "next/image";
 import Link from "next/link";
-import privateRoute from "@/middleware/privateRoute";
+
 
 const mapRecursiveEvolutionChain = (
   pokemonEvolutionChainData: Chain,
@@ -256,4 +256,4 @@ function PokemonDetail() {
   );
 }
 
-export default privateRoute(PokemonDetail);
+export default PokemonDetail;

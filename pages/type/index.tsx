@@ -88,4 +88,4 @@ function TypeList() {
   );
 }
 
-export default privateRoute(TypeList);
+export default TypeList
