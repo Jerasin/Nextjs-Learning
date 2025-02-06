@@ -13,7 +13,7 @@ export interface PokemonType {
   url: string;
 }
 
-export interface ReponseApiPokemon {
+export interface PokemonTypes {
   count: number;
   results: PokemonType[];
 }
@@ -214,4 +214,10 @@ export interface Pokemon {
 export interface ReponseApiPokemon {
   count: number;
   results: Pokemon[];
+}
+
+export interface PokemonTypeRelation {
+  name: string;
+  value: string;
+  url: string;
 }

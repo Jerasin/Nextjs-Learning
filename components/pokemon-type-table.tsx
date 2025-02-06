@@ -1,146 +1,86 @@
 "use client";
-import { PokemonTypeDetail } from "@/interfaces/pokemon";
+import { PokemonTypeRelation, PokemonTypes } from "@/interfaces/pokemon";
 import React, { useEffect, useState } from "react";
 import LoadingPage from "./loading-page";
+import { useRouter } from "next/router";
+import getPathId from "@/utils/useQuery";
 
 interface PokemonTypeTableProps {
-  allTypes: Array<{ name: string }>;
-  relationType?: PokemonTypeDetail | null;
+  allTypes: PokemonTypes;
+  relationType: PokemonTypeRelation[];
 }
 
 export default function PokemonTypeTable(props: PokemonTypeTableProps) {
   const { allTypes, relationType } = props;
-  const [newAllTypes, setNewAlltypes] = useState<{ name: string }[]>();
+  const router = useRouter();
 
-  useEffect(() => {
-    if (relationType != null && allTypes != null) {
-      console.log("relationType", relationType);
-      const damageRelationKeys = Object.keys(relationType.damage_relations);
+  const mappingColor: { [key: string]: string } = {
+    normal: "p-4 w-32 h-16 rounded-md bg-[#aa9;] cursor-pointer",
+    fire: "p-4 w-32 h-16 rounded-md bg-[#f42] cursor-pointer",
+    fighting: "p-4 w-32 h-16 rounded-md bg-[#b54] cursor-pointer",
+    flying: "p-4 w-32 h-16 rounded-md bg-[#89f] cursor-pointer",
+    poison: "p-4 w-32 h-16 rounded-md bg-[#a59] cursor-pointer",
+    ground: "p-4 w-32 h-16 rounded-md bg-[#db5] cursor-pointer",
+    rock: "p-4 w-32 h-16 rounded-md bg-[#ba6] cursor-pointer",
+    bug: "p-4 w-32 h-16 rounded-md bg-[#ab2] cursor-pointer",
+    ghost: "p-4 w-32 h-16 rounded-md bg-[#66b] cursor-pointer",
+    steel: "p-4 w-32 h-16 rounded-md bg-[#aab] cursor-pointer",
+    water: "p-4 w-32 h-16 rounded-md bg-[#39f] cursor-pointer",
+    grass: "p-4 w-32 h-16 rounded-md bg-[#7c5] cursor-pointer",
+    electric: "p-4 w-32 h-16 rounded-md bg-[#fc3] cursor-pointer",
+    psychic: "p-4 w-32 h-16 rounded-md bg-[#f59] cursor-pointer",
+    ice: "p-4 w-32 h-16 rounded-md bg-[#6cf] cursor-pointer",
+    dragon: "p-4 w-32 h-16 rounded-md bg-[#76e] cursor-pointer",
+    dark: "p-4 w-32 h-16 rounded-md bg-[#754] cursor-pointer",
+    fairy: "p-4 w-32 h-16 rounded-md bg-[#e9e] cursor-pointer",
+    stellar: "p-4 w-32 h-16 rounded-md bg-[#aab] cursor-pointer",
+  };
 
-      const primaryTypes = new Set();
-      damageRelationKeys.forEach((relation: any) => {
-        const relationTypes = relationType.damage_relations as any;
-        relationTypes[relation].forEach((i: any) => {
-          primaryTypes.add(i.name);
-        });
-      });
-
-      console.log("primaryTypes", primaryTypes);
-      const filterTypes = allTypes.filter((item) =>
-        primaryTypes.has(item.name)
-      );
-      console.log("filterTypes", filterTypes);
-      setNewAlltypes(filterTypes);
-    }
-  }, [allTypes, relationType]);
-
-  if (relationType == null || allTypes == null) {
-    return LoadingPage();
-  }
+  const mappingValue: { [key: string]: string } = {
+    "0": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#2e3436]",
+    "½": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#a40000]",
+    "2": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#4e9a06]",
+  };
 
   return (
     <div className="relative overflow-x-auto">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th className="border border-b w-auto p-8"></th>
-
-            {newAllTypes?.map((type, index) => {
-              return (
-                <th key={index} className="px-6 py-4 border border-b">
-                  <h1 className="text-center  font-bold w-auto">{type.name}</h1>
-                </th>
-              );
-            }) ?? []}
-          </tr>
-        </thead>
-        <tbody>
-          {newAllTypes?.map((rowType, roleIndex) => {
-            return (
-              <tr
-                key={roleIndex}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+      <div className="flex flex-row">
+        {allTypes?.results.filter(i=> i.name != "unknown" && i.name != "stellar")?.map((type, index) => {
+          return (
+            <div key={index} className="w-full border-2  border-solid bg-white">
+              <div
+                className={`${
+                  mappingColor[type.name] ??
+                  "p-4 w-32 h-16 rounded-md bg-red-500 cursor-pointer"
+                }`}
+                onClick={() => {
+                  router.push(`${parseInt(getPathId(type?.url) ?? "")}`);
+                }}
               >
-                <td className="px-6 py-4">
-                  <h1 className="text-center font-bold w-auto">
-                    {rowType.name}
+                <h1 className="text-center font-bold w-auto">
+                  {type.name.toUpperCase().split("").slice(0, 3)}
+                </h1>
+              </div>
+
+              {relationType.find((i) => i.name == type.name) != null ? (
+                <div
+                  className={`${
+                    mappingValue[
+                      relationType.find((i) => i.name == type.name)?.value ?? 0
+                    ]
+                  }`}
+                >
+                  <h1 className="text-center font-bold text-white">
+                    {relationType.find((i) => i.name == type.name)?.value}
                   </h1>
-                </td>
-
-                {newAllTypes.map((colType, colIndex) => {
-                  console.log("rowType", rowType);
-                  console.log("colType", colType);
-                  let multiplier = 0.5;
-                  let bgColor = "bg-white";
-
-                  if (
-                    relationType.damage_relations.double_damage_from.some(
-                      (i) => i.name == colType.name
-                    )
-                  ) {
-                    multiplier = 2;
-                    bgColor = "bg-green-500";
-                  } else if (
-                    relationType.damage_relations.half_damage_from.some(
-                      (i) => i.name == colType.name
-                    )
-                  ) {
-                    multiplier = 0.5;
-                    bgColor = "bg-yellow-500";
-                  } else if (
-                    relationType.damage_relations.no_damage_from.some(
-                      (i) => i.name == colType.name
-                    )
-                  ) {
-                    multiplier = 0;
-                    bgColor = "bg-gray-500";
-                  } else {
-                    multiplier = 1;
-                    bgColor = "bg-pink-500";
-                  }
-
-                  return multiplier > 0 ? (
-                    <td
-                      key={colIndex}
-                      className={`border border-gray-300 p-2 ${bgColor} text-center`}
-                    >
-                      {multiplier === 2
-                        ? "2x"
-                        : multiplier === 0.5
-                        ? "½x"
-                        : "1x"}
-                    </td>
-                  ) : (
-                    <td
-                      key={colIndex}
-                      className={`border border-gray-300 p-2 ${bgColor} text-center`}
-                    ></td>
-                  );
-                })}
-
-                {/* <td className="px-6 py-4 w-full">
-                      <ProgressBarComponent value={item.base_stat} />
-                    </td>
-                    <td className="px-6 py-4">
-                      <h1 className="text-center font-bold w-24">
-                        {item.base_stat}
-                      </h1>
-                    </td> */}
-              </tr>
-            );
-          }) ?? []}
-
-          {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <td className="px-6 py-4">
-              <h1 className="text-center font-bold w-32">Total</h1>
-            </td>
-            <td className="px-6 py-4 w-full"></td>
-            <td className="px-6 py-4">
-              <h1 className="text-center font-bold w-24">{0}</h1>
-            </td>
-          </tr> */}
-        </tbody>
-      </table>
+                </div>
+              ) : (
+                <div className="mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center"></div>
+              )}
+            </div>
+          );
+        }) ?? []}
+      </div>
     </div>
   );
 }

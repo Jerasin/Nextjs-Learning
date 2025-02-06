@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import getPathId from "../../utils/useQuery";
 import Badge from "../../components/badge";
-import { PokemonTypeDetail } from "../../interfaces/pokemon";
+import {
+  PokemonTypeDetail,
+  PokemonTypeRelation,
+} from "../../interfaces/pokemon";
 import ErrorPage from "../../components/error-page";
 import LoadingPage from "../../components/loading-page";
 import PokeomonListBadge from "@/components/pokeomon-list-badge";
@@ -13,20 +16,19 @@ import Navbar from "@/components/navbar";
 import { GetPokemonTypeDetail } from "@/lib/api/type/detail";
 import { GetPokemonTypeAll } from "@/lib/api/type/type-all";
 
-
 function PokemonType() {
   const router = useRouter();
   const [typeId, setTypeId] = useState<number | null>(null);
-  const [types, setTypes] = useState<any[]>([]);
-  const [pokemonTypeDetail, setPokemonTypeDetail] =
-    useState<PokemonTypeDetail | null>(null);
+  const [pokemonTypeRelationDef, setPokemonTypeRelationDef] = useState<
+    PokemonTypeRelation[]
+  >([]);
   const queryId = parseInt(router?.query?.id as any);
   const { data, error, isLoading } = GetPokemonTypeDetail(queryId);
   const {
     data: dataTypeAll,
     error: errorTypeAll,
     isLoading: isLoadingTypeAll,
-  } = GetPokemonTypeAll();
+  } = GetPokemonTypeAll({ limit: 9999 });
 
   useEffect(() => {
     if (data?.move_damage_class?.url) {
@@ -37,9 +39,34 @@ function PokemonType() {
       }
     }
 
-    if (data && dataTypeAll) {
-      setTypes(dataTypeAll.results);
-      setPokemonTypeDetail(data);
+    if (data) {
+      if (data?.moves?.length == 0 && data?.pokemon?.length == 0) {
+        router.back();
+      }
+
+      const damageDef: PokemonTypeRelation[] = [];
+
+      if (data?.damage_relations?.double_damage_from?.length > 0) {
+        data?.damage_relations?.double_damage_from.forEach((a) => {
+          damageDef.push({ name: a.name, url: a.url, value: "2" });
+        });
+      }
+
+      if (data?.damage_relations?.half_damage_from?.length > 0) {
+        data?.damage_relations?.half_damage_from.forEach((a) => {
+          damageDef.push({ name: a.name, url: a.url, value: "½" });
+        });
+      }
+
+      if (data?.damage_relations?.no_damage_from?.length > 0) {
+        data?.damage_relations?.no_damage_from.forEach((a) => {
+          damageDef.push({ name: a.name, url: a.url, value: "0" });
+        });
+      }
+
+      if (damageDef.length > 0) {
+        setPokemonTypeRelationDef(damageDef);
+      }
     }
   }, [data, dataTypeAll]);
 
@@ -56,13 +83,18 @@ function PokemonType() {
       <Navbar />
       <div className="flex flex-col min-h-screen  justify-start p-5 lg:p-10">
         <div className="flex  justify-center">
-          <h1 className="text-center font-bold text-3xl pt-10">{data?.name}</h1>
+          <h1 className="text-center font-bold text-3xl pt-10">
+            {data?.name.toUpperCase()}
+          </h1>
         </div>
 
         <div className="flex items-center  flex-col mt-10">
-          <div className=" w-auto relative overflow-x-auto">
+          {/* <div className="min-w-full">
             <h1 className="font-bold text-3xl mb-6">Property</h1>
-            <table className="w-full text-center bg-white table-auto border-collapse border border-black">
+          </div> */}
+
+          <div className="2xl:max-w-xl max-w-full relative overflow-x-auto">
+            <table className="min-w-full text-center bg-white table-auto border-collapse border border-black">
               <thead>
                 <tr>
                   <th className="border border-black w-auto p-8">Property</th>
@@ -134,26 +166,13 @@ function PokemonType() {
             </table>
           </div>
 
-          <div className="w-full">
+          <div className="2xl:max-w-xl max-w-full">
             <h1 className="font-bold text-3xl my-8">Type defenses</h1>
 
-            <div className="flex">
-              <div className="text-center  flex flex-col justify-center mx-12">
-                <h1>Damage From</h1>
-              </div>
-
-              <div className="flex flex-col flex-1">
-                <div className="text-center mb-12">
-                  <h1>Damage To</h1>
-                </div>
-                <div className="w-full">
-                  <PokemonTypeTable
-                    relationType={pokemonTypeDetail}
-                    allTypes={types}
-                  />
-                </div>
-              </div>
-            </div>
+            <PokemonTypeTable
+              relationType={pokemonTypeRelationDef}
+              allTypes={dataTypeAll}
+            />
           </div>
 
           <div className="flex justify-center m-10">
@@ -174,4 +193,4 @@ function PokemonType() {
   );
 }
 
-export default PokemonType
+export default PokemonType;

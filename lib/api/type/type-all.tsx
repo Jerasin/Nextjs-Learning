@@ -1,12 +1,31 @@
 import { HtttpResponse } from "@/interfaces/http";
-import { ReponseApiPokemon } from "@/interfaces/pokemon";
+import { PokemonTypes } from "@/interfaces/pokemon";
 import { fetcher } from "@/utils/useFetch";
 import useSWR from "swr";
 
-export const GetPokemonTypeAll = (): HtttpResponse<
-  ReponseApiPokemon | undefined
-> => {
-  const url = `https://pokeapi.co/api/v2/type`;
+interface GetPokemonTypeAllOptions {
+  offset?: number;
+  limit?: number;
+}
+
+export const GetPokemonTypeAll = (
+  options?: GetPokemonTypeAllOptions
+): HtttpResponse<PokemonTypes> => {
+  let url = `https://pokeapi.co/api/v2/type`;
+  const { offset, limit } = options ?? {};
+
+  if (offset != null) {
+    url = `${url}?offset=${offset}`;
+  }
+
+  if (limit != null) {
+    if (offset != null) {
+      url = `${url}&limit=${limit}`;
+    } else {
+      url = `${url}?limit=${limit}`;
+    }
+  }
+
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   return {

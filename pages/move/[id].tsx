@@ -6,7 +6,7 @@ import Badge from "@/components/badge";
 import getPathId from "@/utils/useQuery";
 import PokeomonListBadge from "@/components/pokeomon-list-badge";
 import { GetMoveDetail } from "@/lib/api/move/detail";
-
+import Navbar from "@/components/navbar";
 
 function MoveDetail() {
   const router = useRouter();
@@ -45,14 +45,16 @@ function MoveDetail() {
   const pathType = getPathId(data?.type?.url);
 
   return (
-    <div className="flex flex-col min-h-screen  justify-start p-5 lg:p-10">
-      <div className="flex  justify-center">
-        <h1 className="text-center font-bold text-3xl pt-10">{data?.name}</h1>
-      </div>
+    <>
+      <Navbar />
+      
+      <div className="flex flex-col min-h-screen  justify-start p-5 lg:p-10">
+        <div className="flex  justify-center">
+          <h1 className="text-center font-bold text-3xl pt-10">{data?.name}</h1>
+        </div>
 
-      <div className="flex items-center  flex-col mt-10">
-        <div className="flex flex-col  max-w-xl">
-          <div className="relative overflow-x-auto">
+        <div className="flex items-center  flex-col mt-10">
+          <div className="relative overflow-x-auto 2xl:max-w-xl max-w-full">
             <table className="w-full text-center bg-white table-auto border-collapse border border-black">
               <thead>
                 <tr>
@@ -134,23 +136,23 @@ function MoveDetail() {
               </tbody>
             </table>
           </div>
-        </div>
 
-        <div className="flex justify-center m-10">
-          <div className="flex flex-row">
-            <div className="flex-auto bg-red-500">
-              <button
-                className="border border-solid rounded-lg p-2"
-                onClick={(e) => router.back()}
-              >
-                Back
-              </button>
+          <div className="flex justify-center m-10">
+            <div className="flex flex-row">
+              <div className="flex-auto bg-red-500">
+                <button
+                  className="border border-solid rounded-lg p-2"
+                  onClick={(e) => router.back()}
+                >
+                  Back
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
-export default MoveDetail
+export default MoveDetail;
