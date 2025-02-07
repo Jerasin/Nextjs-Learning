@@ -1,21 +1,22 @@
 import { HtttpResponse } from "@/interfaces/http";
-import { PokemonDetail } from "@/interfaces/pokemon";
+import { PokemonTypeDetail } from "@/interfaces/pokemon";
 import { fetchers } from "@/utils/useFetch";
 import useSWR from "swr";
 
-export const GetPokemonDetails = (
-  pokemonIds: number[] | null
-): HtttpResponse<PokemonDetail[]> => {
+export const GetPokemonTypeDetails = (
+  typeIds: number[] | null
+): HtttpResponse<PokemonTypeDetail[]> => {
   const urls =
-    pokemonIds != null && pokemonIds?.length > 0
-      ? pokemonIds
-          .map((item) => `https://pokeapi.co/api/v2/pokemon/${item}/`)
+    typeIds != null && typeIds?.length > 0
+      ? typeIds
+          .map((item) => `https://pokeapi.co/api/v2/type/${item}/`)
           .filter((item) => item != null)
       : null;
+
   const { data, error, isLoading } = useSWR(urls, fetchers);
 
   if (data == null) {
-    const res: PokemonDetail[] = [];
+    const res: PokemonTypeDetail[] = [];
     return {
       data: res,
       error,

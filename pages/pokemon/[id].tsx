@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import getPathId from "../../utils/useQuery";
-import { Chain } from "../../interfaces/pokemon";
+import { Chain, PokemonTypeRelation } from "../../interfaces/pokemon";
 import LoadingPage from "../../components/loading-page";
 import FailedPage from "../../components/failed-page";
 import EvolutionChart from "@/components/evolution-chart";
@@ -16,7 +16,9 @@ import { GetPokemonDetails } from "@/lib/api/pokemon/details";
 import { GetPokemonDetail } from "@/lib/api/pokemon/detail";
 import Image from "next/image";
 import Link from "next/link";
-
+import PokemonTypeTable from "@/components/pokemon-type-table";
+import { GetPokemonTypeAll } from "@/lib/api/type/type-all";
+import { GetPokemonTypeDetails } from "@/lib/api/type/details";
 
 const mapRecursiveEvolutionChain = (
   pokemonEvolutionChainData: Chain,
@@ -46,6 +48,11 @@ function PokemonDetail() {
   );
   const [speciesId, setSpeciesId] = useState<number | null>(null);
   const [varieties, setVarieties] = useState<number[] | null>(null);
+  const [typeIds, setTypeIds] = useState<number[] | null>(null);
+  const [pokemonTypeRelationDef, setPokemonTypeRelationDef] = useState<
+    PokemonTypeRelation[]
+  >([]);
+
   const router = useRouter();
   const pokemonId = parseInt(router?.query?.id as any);
   const { data, error, isLoading } = GetPokemonDetail(pokemonId);
@@ -74,11 +81,68 @@ function PokemonDetail() {
     isLoading: pokemonVarietiesIsLoading,
   } = GetPokemonDetails(varieties);
 
+  const {
+    data: dataTypeAll,
+    error: typeAllError,
+    isLoading: typeAllIsLoading,
+  } = GetPokemonTypeAll({ limit: 9999 });
+
+  const {
+    data: typeDetails,
+    error: typeDetailsError,
+    isLoading: typeDetailsIsLoading,
+  } = GetPokemonTypeDetails(typeIds);
+
   useEffect(() => {
     const fetchData = async () => {
       if (data?.species?.url) {
         const id = getPathId(data?.species?.url);
         if (id != null) setSpeciesId(parseInt(id));
+      }
+
+      if (data.types?.length > 0) {
+        const mappingTypeIds = data.types
+          ?.map((i) => {
+            const typeId = getPathId(i.type.url);
+            if (typeId != null) return parseInt(typeId);
+          })
+          .filter((i) => i != null);
+        setTypeIds(mappingTypeIds);
+      }
+
+      if (typeDetails.length > 0) {
+        const damageDef: PokemonTypeRelation[] = [];
+
+        typeDetails.forEach((item) => {
+          if (item?.damage_relations?.double_damage_from?.length > 0) {
+            item?.damage_relations?.double_damage_from.forEach((a) => {
+              if (data.types.find((i) => i.type.url == a.url)) {
+                return;
+              }
+              damageDef.push({ name: a.name, url: a.url, value: "2" });
+            });
+          }
+
+          if (item?.damage_relations?.half_damage_from?.length > 0) {
+            item?.damage_relations?.half_damage_from.forEach((a) => {
+              if (data.types.find((i) => i.type.url == a.url)) {
+                return;
+              }
+              
+              damageDef.push({ name: a.name, url: a.url, value: "½" });
+            });
+          }
+
+          // if (data?.damage_relations?.no_damage_from?.length > 0) {
+          //   data?.damage_relations?.no_damage_from.forEach((a) => {
+          //     damageDef.push({ name: a.name, url: a.url, value: "0" });
+          //   });
+          // }
+
+          if (damageDef.length > 0) {
+            setPokemonTypeRelationDef(damageDef);
+          }
+        });
       }
 
       if (pokemonData) {
@@ -126,7 +190,9 @@ function PokemonDetail() {
     pokemonIsLoading ||
     pokemonEvolutionChainIsLoading ||
     pokemonDetailsIsLoading ||
-    pokemonVarietiesIsLoading;
+    pokemonVarietiesIsLoading ||
+    typeAllIsLoading ||
+    typeDetailsIsLoading;
 
   if (isAllLoading) {
     LoadingPage();
@@ -137,7 +203,9 @@ function PokemonDetail() {
     pokemonError ||
     pokemonEvolutionChainError ||
     pokemonDetailsError ||
-    pokemonVarietiesError
+    pokemonVarietiesError ||
+    typeAllError ||
+    typeDetailsError
   ) {
     FailedPage();
   }
@@ -146,12 +214,35 @@ function PokemonDetail() {
   const pokemonRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   useEffect(() => {
     if (data?.name && pokemonRefs.current[data.name]) {
-      // ถ้าพบ pokemon ที่ตรงกับ data?.name, เลื่อน scroll ไปยัง pokemon นั้น
       pokemonRefs.current[data.name]?.scrollIntoView({
         behavior: "smooth",
-        block: "center", // ทำให้ element อยู่ตรงกลางหน้าจอ
+        block: "center",
       });
     }
+
+    //  const damageDef: PokemonTypeRelation[] = [];
+
+    //       if (data?.damage_relations?.double_damage_from?.length > 0) {
+    //         data?.damage_relations?.double_damage_from.forEach((a) => {
+    //           damageDef.push({ name: a.name, url: a.url, value: "2" });
+    //         });
+    //       }
+
+    //       if (data?.damage_relations?.half_damage_from?.length > 0) {
+    //         data?.damage_relations?.half_damage_from.forEach((a) => {
+    //           damageDef.push({ name: a.name, url: a.url, value: "½" });
+    //         });
+    //       }
+
+    //       if (data?.damage_relations?.no_damage_from?.length > 0) {
+    //         data?.damage_relations?.no_damage_from.forEach((a) => {
+    //           damageDef.push({ name: a.name, url: a.url, value: "0" });
+    //         });
+    //       }
+
+    //       if (damageDef.length > 0) {
+    //         setPokemonTypeRelationDef(damageDef);
+    //       }
   }, [pokemonData]);
 
   return (
@@ -229,13 +320,25 @@ function PokemonDetail() {
             </div>
 
             {/* Evolution Chart */}
-            {pokemonData?.evolution_chain &&
-              pokemonEvolutionChainData && (
-                <EvolutionChart
-                  pokemonEvolutionChainData={pokemonEvolutionChainData.chain}
-                  pokemonDetails={pokemonDetails}
+            {pokemonData?.evolution_chain && pokemonEvolutionChainData && (
+              <EvolutionChart
+                pokemonEvolutionChainData={pokemonEvolutionChainData.chain}
+                pokemonDetails={pokemonDetails}
+              />
+            )}
+
+            <div className="mt-8 p-4">
+              <div className="mb-8 text-center">
+                <h1 className="font-bold text-3xl">Type defenses</h1>
+              </div>
+
+              <div>
+                <PokemonTypeTable
+                  relationType={pokemonTypeRelationDef}
+                  allTypes={dataTypeAll}
                 />
-              )}
+              </div>
+            </div>
 
             <div className="flex justify-center m-10">
               <div className="flex flex-row">
