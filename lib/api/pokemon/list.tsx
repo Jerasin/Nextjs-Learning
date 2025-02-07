@@ -11,7 +11,9 @@ export const GetPokemonList = (
   const offset = (page - 1) * page_size;
   const limit = page_size;
 
-  const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
+  console.log("process.env.NEXT_PUBLIC_API_URL",process.env.NEXT_PUBLIC_API_URL);
+
+  const url = `${process.env.NEXT_PUBLIC_API_URL}?limit=${limit}&offset=${offset}`;
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   return {

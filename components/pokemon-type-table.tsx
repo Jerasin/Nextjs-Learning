@@ -40,6 +40,7 @@ export default function PokemonTypeTable(props: PokemonTypeTableProps) {
     "0": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#2e3436]",
     "½": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#a40000]",
     "2": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#4e9a06]",
+    "¼":"mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#7c0000]",
   };
 
   return (

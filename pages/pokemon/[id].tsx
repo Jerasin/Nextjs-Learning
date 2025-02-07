@@ -125,16 +125,21 @@ function PokemonDetail() {
 
           if (item?.damage_relations?.half_damage_from?.length > 0) {
             item?.damage_relations?.half_damage_from.forEach((a) => {
+              
               if (data.types.find((i) => i.type.url == a.url)) {
-                return;
+                console.log("1/4",a);
+                damageDef.push({ name: a.name, url: a.url, value: "¼" });
+              }else{
+                console.log("1/2",a);
+                damageDef.push({ name: a.name, url: a.url, value: "½" });
               }
               
-              damageDef.push({ name: a.name, url: a.url, value: "½" });
+              
             });
           }
 
-          // if (data?.damage_relations?.no_damage_from?.length > 0) {
-          //   data?.damage_relations?.no_damage_from.forEach((a) => {
+          // if (item?.damage_relations?.no_damage_from?.length > 0) {
+          //   item?.damage_relations?.no_damage_from.forEach((a) => {
           //     damageDef.push({ name: a.name, url: a.url, value: "0" });
           //   });
           // }
