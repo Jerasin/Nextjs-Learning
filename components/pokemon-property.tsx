@@ -134,7 +134,7 @@ export default function PokemonPropertyTable(
                             return (
                               <PokeomonListBadge
                                 key={`${i.ability.name}-${i.slot}`}
-                                move={i.ability}
+                                ability={i.ability}
                               />
                             );
                           }

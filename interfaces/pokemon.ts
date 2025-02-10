@@ -198,3 +198,53 @@ export interface PokemonTypeRelation {
   value: string;
   url: string;
 }
+
+export interface PokemonAbility {
+  name: string;
+  url: string;
+}
+
+export interface ReponseApiPokemonAbility {
+  count: number;
+  results: PokemonAbility[];
+}
+
+export interface EffectChangeEntryLanguage {
+  name: string;
+  url: string;
+}
+
+export interface EffectChangeVersionGroup {
+  name: string;
+  url: string;
+}
+
+export interface EffectChangeEntry {
+  effect: string;
+  language: EffectChangeEntryLanguage;
+}
+
+export interface EffectChange {
+  effect_entries: EffectChangeEntry[];
+  version_group: EffectChangeVersionGroup;
+}
+
+export interface PokemonAbilityDetailPokemon {
+  is_hidden: boolean;
+  pokemon: { name: string; url: string };
+  slot: number;
+}
+
+export interface PokemonAbilityEffectEntryDetail {
+  effect: string;
+  short_effect: string;
+}
+
+export interface PokemonAbilityDetail {
+  effect_changes: EffectChange[];
+  effect_entries: PokemonAbilityEffectEntryDetail[];
+  name: string;
+  id: number;
+  pokemon: PokemonAbilityDetailPokemon[];
+  generation: { name: string; url: string };
+}
