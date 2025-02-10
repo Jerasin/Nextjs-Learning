@@ -298,12 +298,13 @@ function PokemonDetail() {
             </div>
 
             {/* Evolution Chart */}
-            {pokemonData?.evolution_chain && pokemonEvolutionChainData && (
-              <EvolutionChart
-                pokemonEvolutionChainData={pokemonEvolutionChainData.chain}
-                pokemonDetails={pokemonDetails}
-              />
-            )}
+            {pokemonData?.evolution_chain &&
+              pokemonEvolutionChainData?.chain?.evolves_to?.length > 0 && (
+                <EvolutionChart
+                  pokemonEvolutionChainData={pokemonEvolutionChainData.chain}
+                  pokemonDetails={pokemonDetails}
+                />
+              )}
 
             <div className="mt-8 p-4">
               <div className="mb-8 text-center">
