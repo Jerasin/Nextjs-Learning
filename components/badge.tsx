@@ -38,14 +38,16 @@ interface BadgeProps {
   name: string;
   pathname?: string;
   color?: string;
+  customStyle?: string;
 }
 
 export default function Badge(props: BadgeProps) {
-  const { url, name, pathname, color } = props;
+  const { url, name, pathname, color, customStyle } = props;
   const router = useRouter();
   const style: string | undefined = colorMap[color ?? ""];
 
-  if (color == null || style == null) {
+  if ((color == null || style == null) && customStyle == null) {
+    console.log("getRandomColor");
     return (
       <button
         key={name}
@@ -58,14 +60,15 @@ export default function Badge(props: BadgeProps) {
       </button>
     );
   } else {
-    console.log("color", color);
-    console.log("style", style);
-    console.log("name", name);
+    // console.log("customStyle", customStyle);
+    // console.log("color", color);
+    // console.log("style", style);
+    // console.log("name", name);
 
     return (
       <button
         key={name}
-        className={style}
+        className={style ?? customStyle}
         onClick={() => {
           router.push(`${router.basePath}${pathname}`);
         }}

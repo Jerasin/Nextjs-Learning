@@ -125,16 +125,13 @@ function PokemonDetail() {
 
           if (item?.damage_relations?.half_damage_from?.length > 0) {
             item?.damage_relations?.half_damage_from.forEach((a) => {
-              
               if (data.types.find((i) => i.type.url == a.url)) {
-                console.log("1/4",a);
+                console.log("1/4", a);
                 damageDef.push({ name: a.name, url: a.url, value: "¼" });
-              }else{
-                console.log("1/2",a);
+              } else {
+                console.log("1/2", a);
                 damageDef.push({ name: a.name, url: a.url, value: "½" });
               }
-              
-              
             });
           }
 
@@ -188,7 +185,7 @@ function PokemonDetail() {
     if (data) {
       fetchData();
     }
-  }, [data, pokemonData, pokemonEvolutionChainData]);
+  }, [data, pokemonData, pokemonEvolutionChainData, dataTypeAll]);
 
   const isAllLoading =
     isLoading ||
@@ -224,30 +221,6 @@ function PokemonDetail() {
         block: "center",
       });
     }
-
-    //  const damageDef: PokemonTypeRelation[] = [];
-
-    //       if (data?.damage_relations?.double_damage_from?.length > 0) {
-    //         data?.damage_relations?.double_damage_from.forEach((a) => {
-    //           damageDef.push({ name: a.name, url: a.url, value: "2" });
-    //         });
-    //       }
-
-    //       if (data?.damage_relations?.half_damage_from?.length > 0) {
-    //         data?.damage_relations?.half_damage_from.forEach((a) => {
-    //           damageDef.push({ name: a.name, url: a.url, value: "½" });
-    //         });
-    //       }
-
-    //       if (data?.damage_relations?.no_damage_from?.length > 0) {
-    //         data?.damage_relations?.no_damage_from.forEach((a) => {
-    //           damageDef.push({ name: a.name, url: a.url, value: "0" });
-    //         });
-    //       }
-
-    //       if (damageDef.length > 0) {
-    //         setPokemonTypeRelationDef(damageDef);
-    //       }
   }, [pokemonData]);
 
   return (
@@ -337,12 +310,10 @@ function PokemonDetail() {
                 <h1 className="font-bold text-3xl">Type defenses</h1>
               </div>
 
-              <div>
-                <PokemonTypeTable
-                  relationType={pokemonTypeRelationDef}
-                  allTypes={dataTypeAll}
-                />
-              </div>
+              <PokemonTypeTable
+                relationType={pokemonTypeRelationDef}
+                allTypes={dataTypeAll}
+              />
             </div>
 
             <div className="flex justify-center m-10">

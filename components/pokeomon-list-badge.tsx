@@ -2,7 +2,6 @@ import getPathId from "@/utils/useQuery";
 import React from "react";
 import Badge from "./badge";
 
-
 interface PokenmonMoveBadge {
   name: string;
   url: string;
@@ -104,8 +103,31 @@ export default function PokeomonListBadge(props: BadgeProps) {
     );
   } else if (props.types != null) {
     const pokemonTypeId = getPathId(props.types.type.url);
+    const mappingColor: { [key: string]: string } = {
+      normal: "mr-2 inline-flex items-center rounded-md  px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#aa9;] cursor-pointer",
+      fire: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#f42] cursor-pointer",
+      fighting: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#b54] cursor-pointer",
+      flying: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#89f] cursor-pointer",
+      poison: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#a59] cursor-pointer",
+      ground: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#db5] cursor-pointer",
+      rock: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#ba6] cursor-pointer",
+      bug: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#ab2] cursor-pointer",
+      ghost: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#66b] cursor-pointer",
+      steel: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#aab] cursor-pointer",
+      water: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#39f] cursor-pointer",
+      grass: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#7c5] cursor-pointer",
+      electric: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#fc3] cursor-pointer",
+      psychic: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#f59] cursor-pointer",
+      ice: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#6cf] cursor-pointer",
+      dragon: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#76e] cursor-pointer",
+      dark: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#754] cursor-pointer",
+      fairy: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#e9e] cursor-pointer",
+      stellar: "mr-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white ring-1 ring-inset bg-[#aab] cursor-pointer",
+    };
+
     return (
       <Badge
+        customStyle={`${mappingColor[props.types.type.name]}`}
         key={props.types.type.name}
         name={props.types.type.name}
         url={props.types.type.url}

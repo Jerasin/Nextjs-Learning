@@ -14,6 +14,8 @@ export default function PokemonTypeTable(props: PokemonTypeTableProps) {
   const { allTypes, relationType } = props;
   const router = useRouter();
 
+  useEffect(() => {}, [allTypes, relationType]);
+
   const mappingColor: { [key: string]: string } = {
     normal: "p-4 w-32 h-16 rounded-md bg-[#aa9;] cursor-pointer",
     fire: "p-4 w-32 h-16 rounded-md bg-[#f42] cursor-pointer",
@@ -40,47 +42,53 @@ export default function PokemonTypeTable(props: PokemonTypeTableProps) {
     "0": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#2e3436]",
     "½": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#a40000]",
     "2": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#4e9a06]",
-    "¼":"mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#7c0000]",
+    "¼": "mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center bg-[#7c0000]",
   };
 
   return (
     <div className="relative overflow-x-auto">
       <div className="flex flex-row">
-        {allTypes?.results.filter(i=> i.name != "unknown" && i.name != "stellar")?.map((type, index) => {
-          return (
-            <div key={index} className="w-full border-2  border-solid bg-white">
+        {allTypes?.results
+          .filter((i) => i.name != "unknown" && i.name != "stellar")
+          ?.map((type, index) => {
+            return (
               <div
-                className={`${
-                  mappingColor[type.name] ??
-                  "p-4 w-32 h-16 rounded-md bg-red-500 cursor-pointer"
-                }`}
-                onClick={() => {
-                  router.push(`${parseInt(getPathId(type?.url) ?? "")}`);
-                }}
+                key={index}
+                className="w-full border-2  border-solid bg-white"
               >
-                <h1 className="text-center font-bold w-auto">
-                  {type.name.toUpperCase().split("").slice(0, 3)}
-                </h1>
-              </div>
-
-              {relationType.find((i) => i.name == type.name) != null ? (
                 <div
                   className={`${
-                    mappingValue[
-                      relationType.find((i) => i.name == type.name)?.value ?? 0
-                    ]
+                    mappingColor[type.name] ??
+                    "p-4 w-32 h-16 rounded-md bg-red-500 cursor-pointer"
                   }`}
+                  onClick={() => {
+                    router.push(`${parseInt(getPathId(type?.url) ?? "")}`);
+                  }}
                 >
-                  <h1 className="text-center font-bold text-white">
-                    {relationType.find((i) => i.name == type.name)?.value}
+                  <h1 className="text-center font-bold w-auto">
+                    {type.name.toUpperCase().split("").slice(0, 3)}
                   </h1>
                 </div>
-              ) : (
-                <div className="mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center"></div>
-              )}
-            </div>
-          );
-        }) ?? []}
+
+                {relationType.find((i) => i.name == type.name) != null ? (
+                  <div
+                    className={`${
+                      mappingValue[
+                        relationType.find((i) => i.name == type.name)?.value ??
+                          0
+                      ]
+                    }`}
+                  >
+                    <h1 className="text-center font-bold text-white">
+                      {relationType.find((i) => i.name == type.name)?.value}
+                    </h1>
+                  </div>
+                ) : (
+                  <div className="mt-1 p-4 border-2 rounded-md w-32 h-16 flex items-center justify-center"></div>
+                )}
+              </div>
+            );
+          }) ?? []}
       </div>
     </div>
   );
