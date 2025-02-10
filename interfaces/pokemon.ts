@@ -111,22 +111,6 @@ export interface PokemonDetail {
   };
 }
 
-// export interface PokemonTypeDetail {
-//   id: number;
-//   name: string;
-//   pokemon: Array<{ pokemon: { name: string; url: string } }>;
-//   moves: Array<{ move: { name: string; url: string } }>;
-//   move_damage_class: { name: string; url: string };
-//   damage_relations: {
-//     double_damage_from: Array<{ pokemon: { name: string; url: string } }>;
-//     double_damage_to: Array<{ pokemon: { name: string; url: string } }>;
-//     half_damage_from: Array<{ pokemon: { name: string; url: string } }>;
-//     half_damage_to: Array<{ pokemon: { name: string; url: string } }>;
-//     no_damage_from: Array<{ pokemon: { name: string; url: string } }>;
-//     no_damage_to: Array<{ pokemon: { name: string; url: string } }>;
-//   };
-// }
-
 export interface PokemonTypeDetail {
   id: number;
   name: string;
@@ -165,13 +149,6 @@ export interface Chain {
   is_baby: boolean;
   species: Trigger;
 }
-
-// export interface Evolvesto2 {
-//   evolution_details: Evolutiondetail[];
-//   evolves_to: Evolvesto[];
-//   is_baby: boolean;
-//   species: Trigger;
-// }
 
 export interface Evolvesto {
   evolution_details: Evolutiondetail[];
