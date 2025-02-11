@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const colors = [
@@ -45,13 +47,19 @@ export default function Badge(props: BadgeProps) {
   const { url, name, pathname, color, customStyle } = props;
   const router = useRouter();
   const style: string | undefined = colorMap[color ?? ""];
+  const [randomColorState,setRandomColorState] = useState<string|null>(null)
 
-  if ((color == null || style == null) && customStyle == null) {
-    console.log("getRandomColor");
+  useEffect(() => {
+    const randomColor = getRandomColor()
+    setRandomColorState(randomColor)
+  }, [name, pathname, color, customStyle]);
+
+  if ((color == null || style == null) && customStyle == null && randomColorState != null) {
+    // console.log("getRandomColor");
     return (
       <button
         key={name}
-        className={getRandomColor()}
+        className={randomColorState}
         onClick={() => {
           router.push(`${router.basePath}${pathname}`);
         }}

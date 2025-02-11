@@ -53,7 +53,7 @@ interface Variety {
   pokemon: Color;
 }
 
-interface Pokedexnumber {
+export interface Pokedexnumber {
   entry_number: number;
   pokedex: Color;
 }

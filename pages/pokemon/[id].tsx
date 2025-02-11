@@ -306,6 +306,21 @@ function PokemonDetail() {
                 />
               )}
 
+            {/* <div className="mt-8 p-4">
+              <div className="mb-8 text-center">
+                <h1 className="font-bold text-3xl">Pokedex Numbers</h1>
+              </div>
+
+              {pokemonData?.pokedex_numbers?.map((item) => {
+                return (
+                  <div className="flex p-4">
+                    <div className="p-4">No.{item.entry_number}</div>
+                    <div className="p-4">Name: {item.pokedex.name}</div>
+                  </div>
+                );
+              })}
+            </div> */}
+
             <div className="mt-8 p-4">
               <div className="mb-8 text-center">
                 <h1 className="font-bold text-3xl">Type defenses</h1>

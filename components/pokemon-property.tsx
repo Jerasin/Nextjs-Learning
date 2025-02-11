@@ -1,7 +1,14 @@
-import { PokemonDetail, PokemonSpecyDetail } from "@/interfaces/pokemon";
-import React from "react";
+"use client";
+
+import {
+  Pokedexnumber,
+  PokemonDetail,
+  PokemonSpecyDetail,
+} from "@/interfaces/pokemon";
+import React, { useEffect, useState } from "react";
 import PokeomonListBadge from "./pokeomon-list-badge";
 import getPathId from "@/utils/useQuery";
+import Badge from "./badge";
 
 interface PokemonPropertyTableInterface {
   pokemonData: PokemonSpecyDetail;
@@ -9,11 +16,43 @@ interface PokemonPropertyTableInterface {
   pokemonId: number;
 }
 
+interface CustomPokedexnumber extends Omit<Pokedexnumber, "entry_number"> {
+  entry_number: string;
+}
+
 export default function PokemonPropertyTable(
   props: PokemonPropertyTableInterface
 ) {
   const { pokemonData, data, pokemonId } = props;
   const x: string[] = [];
+  const [colorId, setColorId] = useState<number | null>(null);
+  const [pokedexNumbers, setPokedexNumbers] = useState<
+    CustomPokedexnumber[] | null
+  >(null);
+
+  useEffect(() => {
+    if (pokemonData?.color?.url != null) {
+      const colorPathId = getPathId(pokemonData?.color.url);
+
+      if (colorPathId != null) {
+        setColorId(parseInt(colorPathId));
+      }
+    }
+
+    if (pokemonData?.pokedex_numbers != null) {
+      const mappingPokedexNumbers = pokemonData?.pokedex_numbers.map((item) => {
+        const maxLength = 4;
+        const entryNumberStr = JSON.stringify(item.entry_number);
+        console.log("padStart", entryNumberStr.padStart(maxLength, "0"));
+        return {
+          ...item,
+          entry_number: entryNumberStr.padStart(maxLength, "0"),
+        };
+      });
+
+      setPokedexNumbers(mappingPokedexNumbers);
+    }
+  }, [pokemonData]);
 
   return (
     <div className="w-auto md:flex items-start  md:flex-row basis-1/2 justify-center">
@@ -46,6 +85,53 @@ export default function PokemonPropertyTable(
                   <td className="border border-black">Capture Rate</td>
                   <td className="border border-black">
                     {pokemonData?.capture_rate}
+                  </td>
+                  <td className="border border-black"></td>
+                </tr>
+
+                <tr>
+                  <td className="border border-black">Local No.</td>
+                  <td className="border border-black">
+                    <div className="flex flex-col items-center w-full">
+                      <div className="overflow-auto max-h-48 h-auto 2xl:w-1/2 p-2 2xl:p-4">
+                        {pokedexNumbers?.map((item) => {
+                          return (
+                            <div
+                              className="text-left w-full"
+                              key={`${item?.entry_number}-${item?.pokedex?.name}`}
+                            >
+                              <table className="w-full table-auto">
+                                <tbody>
+                                  <tr>
+                                    <td className="w-1/3">
+                                      <b className="text-xs md:text-xl">
+                                        {item?.entry_number}
+                                      </b>
+                                    </td>
+                                    <td className="w-2/3 truncate">
+                                      <div className="text-left text-xs md:text-base">
+                                        ({item?.pokedex?.name})
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td className="border border-black">Color</td>
+                  <td className="border border-black">
+                    <Badge
+                      name={pokemonData?.color.name}
+                      url={pokemonData?.color.url}
+                      pathname={`/color/${colorId}`}
+                    />
                   </td>
                   <td className="border border-black"></td>
                 </tr>
