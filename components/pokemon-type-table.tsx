@@ -62,7 +62,7 @@ export default function PokemonTypeTable(props: PokemonTypeTableProps) {
                     "p-4 w-32 h-16 rounded-md bg-red-500 cursor-pointer"
                   }`}
                   onClick={() => {
-                    router.push(`${parseInt(getPathId(type?.url) ?? "")}`);
+                    router.push(`/type/${parseInt(getPathId(type?.url) ?? "")}`);
                   }}
                 >
                   <h1 className="text-center font-bold w-auto">
